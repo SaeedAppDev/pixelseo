@@ -5,6 +5,54 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Maximum image size: 5MB (in bytes)
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
+
+// Allowed image formats
+const ALLOWED_FORMATS = ['jpeg', 'jpg', 'png', 'gif', 'webp'];
+
+// Validate and sanitize input
+function validateImageBase64(imageBase64: unknown): { valid: boolean; error?: string; sanitized?: string } {
+  if (!imageBase64 || typeof imageBase64 !== 'string') {
+    return { valid: false, error: 'Image data is required' };
+  }
+
+  // Check for data URL format
+  const dataUrlMatch = imageBase64.match(/^data:image\/(jpeg|jpg|png|gif|webp);base64,/i);
+  if (!dataUrlMatch) {
+    return { valid: false, error: 'Invalid image format. Supported formats: JPEG, PNG, GIF, WebP' };
+  }
+
+  // Extract base64 data and check size
+  const base64Data = imageBase64.split(',')[1];
+  if (!base64Data) {
+    return { valid: false, error: 'Invalid image data' };
+  }
+
+  // Estimate size: base64 encoded data is ~4/3 the size of the original
+  const estimatedSize = (base64Data.length * 3) / 4;
+  if (estimatedSize > MAX_IMAGE_SIZE) {
+    return { valid: false, error: 'Image too large. Maximum size is 5MB' };
+  }
+
+  return { valid: true, sanitized: imageBase64 };
+}
+
+// Sanitize focus keyword to prevent prompt injection
+function sanitizeFocusKeyword(focusKeyword: unknown): string | undefined {
+  if (!focusKeyword || typeof focusKeyword !== 'string') {
+    return undefined;
+  }
+
+  // Trim, limit length, and remove potentially harmful characters
+  return focusKeyword
+    .trim()
+    .substring(0, 100)
+    .replace(/[<>"'`\\]/g, '')
+    .replace(/[\n\r\t]/g, ' ')
+    .replace(/\s+/g, ' ');
+}
+
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -12,18 +60,37 @@ serve(async (req) => {
   }
 
   try {
-    const { imageBase64, focusKeyword } = await req.json();
-
-    if (!imageBase64) {
+    let requestBody;
+    try {
+      requestBody = await req.json();
+    } catch {
       return new Response(
-        JSON.stringify({ error: 'Image data is required' }),
+        JSON.stringify({ error: 'Invalid request format' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
+    const { imageBase64, focusKeyword } = requestBody;
+
+    // Validate image data
+    const imageValidation = validateImageBase64(imageBase64);
+    if (!imageValidation.valid) {
+      return new Response(
+        JSON.stringify({ error: imageValidation.error }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Sanitize focus keyword
+    const sanitizedKeyword = sanitizeFocusKeyword(focusKeyword);
+
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
     if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY is not configured');
+      console.error('LOVABLE_API_KEY is not configured');
+      return new Response(
+        JSON.stringify({ error: 'AI service is not available' }),
+        { status: 503, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     const systemPrompt = `You are an SEO image analysis expert. Analyze the uploaded image and generate SEO-optimized metadata.
@@ -42,7 +109,7 @@ RULES:
 - ALT text should be descriptive and accessible
 - TITLE text should be concise and engaging
 
-${focusKeyword ? `FOCUS KEYWORD: "${focusKeyword}" - Incorporate this naturally into the metadata.` : 'No focus keyword provided - derive the main topic from image content.'}
+${sanitizedKeyword ? `FOCUS KEYWORD: "${sanitizedKeyword}" - Incorporate this naturally into the metadata.` : 'No focus keyword provided - derive the main topic from image content.'}
 
 RESPOND IN EXACTLY THIS JSON FORMAT (no markdown, no explanation):
 {
@@ -54,8 +121,8 @@ RESPOND IN EXACTLY THIS JSON FORMAT (no markdown, no explanation):
   "titleText": "Engaging title text"
 }`;
 
-    const userPrompt = focusKeyword 
-      ? `Analyze this image with focus keyword: "${focusKeyword}"` 
+    const userPrompt = sanitizedKeyword 
+      ? `Analyze this image with focus keyword: "${sanitizedKeyword}"` 
       : `Analyze this image and generate SEO metadata`;
 
     console.log('Calling Lovable AI for image analysis...');
@@ -77,7 +144,9 @@ RESPOND IN EXACTLY THIS JSON FORMAT (no markdown, no explanation):
               {
                 type: 'image_url',
                 image_url: {
-                  url: imageBase64.startsWith('data:') ? imageBase64 : `data:image/jpeg;base64,${imageBase64}`
+                  url: imageValidation.sanitized!.startsWith('data:') 
+                    ? imageValidation.sanitized! 
+                    : `data:image/jpeg;base64,${imageValidation.sanitized}`
                 }
               }
             ]
@@ -92,28 +161,35 @@ RESPOND IN EXACTLY THIS JSON FORMAT (no markdown, no explanation):
       
       if (response.status === 429) {
         return new Response(
-          JSON.stringify({ error: 'Rate limit exceeded. Please try again later.' }),
+          JSON.stringify({ error: 'Service is busy. Please try again later.' }),
           { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );
       }
       if (response.status === 402) {
         return new Response(
-          JSON.stringify({ error: 'AI credits depleted. Please add credits to continue.' }),
+          JSON.stringify({ error: 'AI service temporarily unavailable.' }),
           { status: 402, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );
       }
       
-      throw new Error(`AI analysis failed: ${response.status}`);
+      return new Response(
+        JSON.stringify({ error: 'Image analysis failed. Please try again.' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     const data = await response.json();
     const content = data.choices?.[0]?.message?.content;
 
     if (!content) {
-      throw new Error('No response from AI');
+      console.error('No content in AI response');
+      return new Response(
+        JSON.stringify({ error: 'Image analysis failed. Please try again.' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
-    console.log('AI response:', content);
+    console.log('AI response received successfully');
 
     // Parse the JSON response
     let analysisResult;
@@ -132,11 +208,11 @@ RESPOND IN EXACTLY THIS JSON FORMAT (no markdown, no explanation):
         detectedType: 'image',
         detectedContent: 'Unable to analyze image content',
         detectedText: '',
-        filename: focusKeyword 
-          ? `${focusKeyword.toLowerCase().replace(/\s+/g, '-')}-image.webp` 
+        filename: sanitizedKeyword 
+          ? `${sanitizedKeyword.toLowerCase().replace(/\s+/g, '-')}-image.webp` 
           : 'optimized-image.webp',
-        altText: focusKeyword || 'Optimized image',
-        titleText: focusKeyword || 'Image',
+        altText: sanitizedKeyword || 'Optimized image',
+        titleText: sanitizedKeyword || 'Image',
       };
     }
 
@@ -147,9 +223,8 @@ RESPOND IN EXACTLY THIS JSON FORMAT (no markdown, no explanation):
 
   } catch (error) {
     console.error('Error in analyze-image function:', error);
-    const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
     return new Response(
-      JSON.stringify({ error: errorMessage }),
+      JSON.stringify({ error: 'An error occurred. Please try again.' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
