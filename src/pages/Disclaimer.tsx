@@ -1,5 +1,6 @@
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
+import { SocialShareButtons } from '@/components/SocialShareButtons';
 import { AlertTriangle, FileWarning, Scale, Sparkles, Link2, RefreshCw } from 'lucide-react';
 
 const sections = [
@@ -45,9 +46,10 @@ const Disclaimer = () => {
           <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4 animate-fade-in-up">
             Disclaimer
           </h1>
-          <p className="text-muted-foreground animate-fade-in-up stagger-1">
+          <p className="text-muted-foreground animate-fade-in-up stagger-1 mb-4">
             Last updated: January 2026
           </p>
+          <SocialShareButtons title="PixelSEO Disclaimer" />
         </div>
 
         <div className="bg-card rounded-xl p-6 md:p-8 shadow-card animate-fade-in-up stagger-2">
