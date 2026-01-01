@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { SocialShareButtons } from '@/components/SocialShareButtons';
+import { ScrollProgressBar } from '@/components/ScrollProgressBar';
+import { ContactStructuredData } from '@/components/structured-data/ContactStructuredData';
 import { Mail, User, MessageSquare, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -19,7 +21,6 @@ const Contact = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validation
     const trimmedName = name.trim();
     const trimmedEmail = email.trim();
     const trimmedMessage = message.trim();
@@ -63,7 +64,6 @@ const Contact = () => {
 
     setIsSubmitting(true);
 
-    // Open email client with pre-filled content
     const subject = encodeURIComponent(`Contact from ${trimmedName}`);
     const body = encodeURIComponent(`Name: ${trimmedName}\nEmail: ${trimmedEmail}\n\nMessage:\n${trimmedMessage}`);
     window.location.href = `mailto:pixelseo71@gmail.com?subject=${subject}&body=${body}`;
@@ -82,6 +82,8 @@ const Contact = () => {
 
   return (
     <main className="min-h-screen bg-background">
+      <ContactStructuredData />
+      <ScrollProgressBar />
       <div className="max-w-6xl mx-auto px-4 py-6">
         <Header />
         
@@ -96,7 +98,6 @@ const Contact = () => {
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
-          {/* Contact Form */}
           <div className="bg-card rounded-xl p-6 md:p-8 shadow-card animate-fade-in-up stagger-2">
             <h2 className="text-xl font-semibold text-foreground mb-6">Send us a message</h2>
             
@@ -169,7 +170,6 @@ const Contact = () => {
             </form>
           </div>
 
-          {/* Contact Info */}
           <div className="space-y-6 animate-fade-in-up stagger-3">
             <div className="bg-card rounded-xl p-6 shadow-card">
               <h2 className="text-xl font-semibold text-foreground mb-4">Get in touch</h2>
