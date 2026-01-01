@@ -10,6 +10,8 @@ export function Footer() {
     { name: 'FAQ', href: '/faq' },
     { name: 'Privacy', href: '/privacy' },
     { name: 'Terms', href: '/terms' },
+    { name: 'Cookies', href: '/cookies' },
+    { name: 'Disclaimer', href: '/disclaimer' },
   ];
 
   const socialLinks = [
