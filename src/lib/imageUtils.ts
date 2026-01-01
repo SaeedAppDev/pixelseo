@@ -1,9 +1,20 @@
+// Supported output formats
+export type OutputFormat = 'webp' | 'avif' | 'png' | 'jpeg';
+
+export const OUTPUT_FORMATS: { value: OutputFormat; label: string; mime: string; ext: string }[] = [
+  { value: 'webp', label: 'WebP', mime: 'image/webp', ext: '.webp' },
+  { value: 'avif', label: 'AVIF', mime: 'image/avif', ext: '.avif' },
+  { value: 'png', label: 'PNG', mime: 'image/png', ext: '.png' },
+  { value: 'jpeg', label: 'JPEG', mime: 'image/jpeg', ext: '.jpg' },
+];
+
 // SEO Filename Generation
 export function generateSEOFilename(
   originalName: string,
   width: number,
   height: number,
-  hasTransparency: boolean
+  hasTransparency: boolean,
+  format: OutputFormat = 'webp'
 ): string {
   const cleanName = originalName.replace(/\.[^.]+$/, '');
   
@@ -42,7 +53,8 @@ export function generateSEOFilename(
     finalName = 'image-' + imageType + '-' + shortDescription;
   }
   
-  return finalName + '.webp';
+  const formatInfo = OUTPUT_FORMATS.find(f => f.value === format);
+  return finalName + (formatInfo?.ext || '.webp');
 }
 
 function detectImageType(filename: string, width: number, height: number): string {
@@ -133,13 +145,61 @@ export interface ConversionResult {
   height: number;
 }
 
-export function convertToWebP(
+// Aggressive compression to target under 50KB when possible
+function calculateOptimalQuality(
+  originalSize: number,
+  targetSize: number = 50 * 1024
+): number {
+  // Estimate compression ratio needed
+  const ratio = targetSize / originalSize;
+  
+  if (ratio >= 1) return 85; // Already small enough
+  if (ratio >= 0.5) return 75;
+  if (ratio >= 0.3) return 65;
+  if (ratio >= 0.2) return 55;
+  if (ratio >= 0.1) return 45;
+  return 35; // Very aggressive for large files
+}
+
+// Calculate optimal resize dimensions for target size
+function calculateOptimalDimensions(
+  width: number,
+  height: number,
+  originalSize: number,
+  targetSize: number = 50 * 1024
+): { width: number; height: number } {
+  // Estimate pixels per byte ratio (rough approximation)
+  const currentPixels = width * height;
+  const bytesPerPixel = originalSize / currentPixels;
+  
+  // Target pixels based on desired file size
+  const targetPixels = targetSize / bytesPerPixel;
+  
+  if (targetPixels >= currentPixels) {
+    return { width, height };
+  }
+  
+  // Calculate scale factor
+  const scale = Math.sqrt(targetPixels / currentPixels);
+  const minScale = 0.25; // Don't go below 25% of original size
+  const finalScale = Math.max(scale, minScale);
+  
+  return {
+    width: Math.round(width * finalScale),
+    height: Math.round(height * finalScale),
+  };
+}
+
+export function convertImage(
   file: File,
   quality: number,
   isLossless: boolean,
+  format: OutputFormat = 'webp',
   resizeWidth?: number,
   resizeHeight?: number,
-  maintainAspectRatio?: boolean
+  maintainAspectRatio?: boolean,
+  maxCompress?: boolean,
+  targetSize: number = 50 * 1024
 ): Promise<ConversionResult> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -159,7 +219,17 @@ export function convertToWebP(
         let targetWidth = img.width;
         let targetHeight = img.height;
         
-        if (resizeWidth || resizeHeight) {
+        // If max compress mode, calculate optimal dimensions first
+        if (maxCompress && !resizeWidth && !resizeHeight) {
+          const optimal = calculateOptimalDimensions(
+            img.width,
+            img.height,
+            file.size,
+            targetSize
+          );
+          targetWidth = optimal.width;
+          targetHeight = optimal.height;
+        } else if (resizeWidth || resizeHeight) {
           const aspectRatio = img.width / img.height;
           if (resizeWidth && resizeHeight) {
             targetWidth = resizeWidth;
@@ -186,6 +256,10 @@ export function convertToWebP(
         
         canvas.width = targetWidth;
         canvas.height = targetHeight;
+        
+        // Use better quality rendering
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
         ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
         
         // Check for transparency
@@ -205,18 +279,33 @@ export function convertToWebP(
           }
         }
         
-        const conversionQuality = isLossless ? 1.0 : quality / 100;
+        // Calculate quality based on compression mode
+        let conversionQuality: number;
+        if (isLossless) {
+          conversionQuality = 1.0;
+        } else if (maxCompress) {
+          conversionQuality = calculateOptimalQuality(file.size, targetSize) / 100;
+        } else {
+          conversionQuality = quality / 100;
+        }
+        
+        const formatInfo = OUTPUT_FORMATS.find(f => f.value === format);
+        const mimeType = formatInfo?.mime || 'image/webp';
+        
+        // For PNG format, quality doesn't apply the same way
+        const qualityArg = format === 'png' ? undefined : conversionQuality;
+        
         canvas.toBlob(
           (blob) => {
             if (blob) {
-              const seoName = generateSEOFilename(file.name, targetWidth, targetHeight, hasTransparency);
+              const seoName = generateSEOFilename(file.name, targetWidth, targetHeight, hasTransparency, format);
               resolve({ blob, seoName, width: targetWidth, height: targetHeight });
             } else {
-              reject(new Error('WebP conversion failed'));
+              reject(new Error(`${format.toUpperCase()} conversion failed`));
             }
           },
-          'image/webp',
-          conversionQuality
+          mimeType,
+          qualityArg
         );
       };
       
@@ -227,4 +316,16 @@ export function convertToWebP(
     reader.onerror = () => reject(new Error('Failed to read file'));
     reader.readAsDataURL(file);
   });
+}
+
+// Legacy function for backwards compatibility
+export function convertToWebP(
+  file: File,
+  quality: number,
+  isLossless: boolean,
+  resizeWidth?: number,
+  resizeHeight?: number,
+  maintainAspectRatio?: boolean
+): Promise<ConversionResult> {
+  return convertImage(file, quality, isLossless, 'webp', resizeWidth, resizeHeight, maintainAspectRatio);
 }

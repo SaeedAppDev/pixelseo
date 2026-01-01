@@ -7,6 +7,7 @@ import { FileList } from '@/components/FileList';
 import { SummarySection } from '@/components/SummarySection';
 import { InfoSection } from '@/components/InfoSection';
 import { useImageConverter } from '@/hooks/useImageConverter';
+import { OUTPUT_FORMATS } from '@/lib/imageUtils';
 
 const Index = () => {
   const {
@@ -15,6 +16,7 @@ const Index = () => {
     updateSettings,
     resetSettings,
     addFiles,
+    reconvertAllFiles,
     updateFileName,
     removeFile,
     clearAll,
@@ -22,11 +24,11 @@ const Index = () => {
   } = useImageConverter();
 
   const handleFilesSelected = (fileList: FileList) => {
-    const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/bmp', 'image/tiff'];
     const validFiles = Array.from(fileList).filter(file => validTypes.includes(file.type));
     
     if (validFiles.length === 0) {
-      toast.error('Please select valid image files (JPG, JPEG, PNG)');
+      toast.error('Please select valid image files (JPG, PNG, GIF, BMP, TIFF)');
       return;
     }
 
@@ -35,7 +37,7 @@ const Index = () => {
   };
 
   const handleDownloadAll = async () => {
-    const convertedFiles = files.filter(f => f.converted && f.webpBlob);
+    const convertedFiles = files.filter(f => f.converted && f.convertedBlob);
     if (convertedFiles.length === 0) {
       toast.error('No converted files available');
       return;
@@ -44,16 +46,17 @@ const Index = () => {
     try {
       const zip = new JSZip();
       convertedFiles.forEach((file) => {
-        if (file.webpBlob) {
-          zip.file(file.seoName || `image.webp`, file.webpBlob);
+        if (file.convertedBlob) {
+          zip.file(file.seoName || `image.${settings.outputFormat}`, file.convertedBlob);
         }
       });
 
+      const formatInfo = OUTPUT_FORMATS.find(f => f.value === settings.outputFormat);
       const blob = await zip.generateAsync({ type: 'blob' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'webp-images.zip';
+      a.download = `${formatInfo?.label.toLowerCase() || 'images'}-converted.zip`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -71,6 +74,12 @@ const Index = () => {
     toast.success('All files cleared');
   };
 
+  const handleReconvert = () => {
+    if (files.length === 0) return;
+    reconvertAllFiles();
+    toast.success('Re-converting all files with new settings');
+  };
+
   return (
     <main className="min-h-screen bg-background">
       <div className="max-w-6xl mx-auto px-4 py-6">
@@ -80,6 +89,8 @@ const Index = () => {
           settings={settings}
           onUpdateSettings={updateSettings}
           onResetSettings={resetSettings}
+          onReconvert={handleReconvert}
+          hasFiles={files.length > 0}
         />
         <FileList
           files={files}

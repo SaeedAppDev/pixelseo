@@ -1,19 +1,20 @@
 import { useState, useCallback } from 'react';
-import { convertToWebP, ConversionResult } from '@/lib/imageUtils';
+import { convertImage, ConversionResult, OutputFormat } from '@/lib/imageUtils';
 
 export interface ImageFile {
   id: string;
   originalFile: File;
-  webpBlob: Blob | null;
+  convertedBlob: Blob | null;
   converted: boolean;
   converting: boolean;
-  webpSize: number;
+  convertedSize: number;
   reduction: number;
   saved: number;
   seoName: string;
   width: number;
   height: number;
   preview: string;
+  convertedPreview: string;
 }
 
 export interface ConversionSettings {
@@ -23,21 +24,27 @@ export interface ConversionSettings {
   resizeWidth: number | undefined;
   resizeHeight: number | undefined;
   maintainAspectRatio: boolean;
+  outputFormat: OutputFormat;
+  maxCompress: boolean;
+  targetSize: number;
 }
 
 const defaultSettings: ConversionSettings = {
-  quality: 90,
+  quality: 80,
   isLossless: false,
   autoConvert: true,
   resizeWidth: undefined,
   resizeHeight: undefined,
   maintainAspectRatio: true,
+  outputFormat: 'webp',
+  maxCompress: true,
+  targetSize: 50,
 };
 
 export function useImageConverter() {
   const [files, setFiles] = useState<ImageFile[]>([]);
   const [settings, setSettings] = useState<ConversionSettings>(() => {
-    const saved = localStorage.getItem('webpSettings');
+    const saved = localStorage.getItem('imageConverterSettings');
     if (saved) {
       try {
         return { ...defaultSettings, ...JSON.parse(saved) };
@@ -51,18 +58,18 @@ export function useImageConverter() {
   const updateSettings = useCallback((newSettings: Partial<ConversionSettings>) => {
     setSettings(prev => {
       const updated = { ...prev, ...newSettings };
-      localStorage.setItem('webpSettings', JSON.stringify(updated));
+      localStorage.setItem('imageConverterSettings', JSON.stringify(updated));
       return updated;
     });
   }, []);
 
   const resetSettings = useCallback(() => {
     setSettings(defaultSettings);
-    localStorage.removeItem('webpSettings');
+    localStorage.removeItem('imageConverterSettings');
   }, []);
 
   const addFiles = useCallback(async (newFiles: FileList | File[]) => {
-    const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/bmp', 'image/tiff'];
     const validFiles = Array.from(newFiles).filter(file => validTypes.includes(file.type));
     
     if (validFiles.length === 0) return;
@@ -78,16 +85,17 @@ export function useImageConverter() {
         return {
           id: crypto.randomUUID(),
           originalFile: file,
-          webpBlob: null,
+          convertedBlob: null,
           converted: false,
           converting: false,
-          webpSize: 0,
+          convertedSize: 0,
           reduction: 0,
           saved: 0,
           seoName: '',
           width: 0,
           height: 0,
           preview,
+          convertedPreview: '',
         };
       })
     );
@@ -97,54 +105,60 @@ export function useImageConverter() {
     // Auto-convert if enabled
     if (settings.autoConvert) {
       for (const imageFile of imageFiles) {
-        convertFile(imageFile.id);
+        convertFileWithSettings(imageFile.id, settings);
       }
     }
-  }, [settings.autoConvert]);
+  }, [settings]);
 
-  const convertFile = useCallback(async (id: string) => {
+  const convertFileWithSettings = useCallback(async (id: string, currentSettings: ConversionSettings) => {
     setFiles(prev => prev.map(f => 
       f.id === id ? { ...f, converting: true } : f
     ));
 
-    const file = files.find(f => f.id === id) || 
-      await new Promise<ImageFile | undefined>(resolve => {
-        setFiles(prev => {
-          const found = prev.find(f => f.id === id);
-          resolve(found);
-          return prev;
-        });
+    const file = await new Promise<ImageFile | undefined>(resolve => {
+      setFiles(prev => {
+        const found = prev.find(f => f.id === id);
+        resolve(found);
+        return prev;
       });
+    });
 
     if (!file) return;
 
     try {
-      const result = await convertToWebP(
+      const result = await convertImage(
         file.originalFile,
-        settings.quality,
-        settings.isLossless,
-        settings.resizeWidth,
-        settings.resizeHeight,
-        settings.maintainAspectRatio
+        currentSettings.quality,
+        currentSettings.isLossless,
+        currentSettings.outputFormat,
+        currentSettings.resizeWidth,
+        currentSettings.resizeHeight,
+        currentSettings.maintainAspectRatio,
+        currentSettings.maxCompress,
+        currentSettings.targetSize * 1024
       );
 
       const originalSize = file.originalFile.size;
-      const webpSize = result.blob.size;
-      const reduction = ((originalSize - webpSize) / originalSize * 100);
-      const saved = originalSize - webpSize;
+      const convertedSize = result.blob.size;
+      const reduction = ((originalSize - convertedSize) / originalSize * 100);
+      const saved = originalSize - convertedSize;
+      
+      // Create preview URL for converted image
+      const convertedPreview = URL.createObjectURL(result.blob);
 
       setFiles(prev => prev.map(f => 
         f.id === id ? {
           ...f,
-          webpBlob: result.blob,
+          convertedBlob: result.blob,
           converted: true,
           converting: false,
-          webpSize,
+          convertedSize,
           reduction,
           saved,
           seoName: result.seoName,
           width: result.width,
           height: result.height,
+          convertedPreview,
         } : f
       ));
     } catch (error) {
@@ -153,30 +167,51 @@ export function useImageConverter() {
         f.id === id ? { ...f, converting: false } : f
       ));
     }
-  }, [files, settings]);
-
-  const updateFileName = useCallback((id: string, newName: string) => {
-    setFiles(prev => prev.map(f => 
-      f.id === id ? { 
-        ...f, 
-        seoName: newName.endsWith('.webp') ? newName : newName + '.webp' 
-      } : f
-    ));
   }, []);
 
+  const convertFile = useCallback((id: string) => {
+    convertFileWithSettings(id, settings);
+  }, [settings, convertFileWithSettings]);
+
+  const reconvertAllFiles = useCallback(() => {
+    files.forEach(file => {
+      convertFileWithSettings(file.id, settings);
+    });
+  }, [files, settings, convertFileWithSettings]);
+
+  const updateFileName = useCallback((id: string, newName: string) => {
+    setFiles(prev => prev.map(f => {
+      if (f.id !== id) return f;
+      const formatExt = settings.outputFormat === 'jpeg' ? '.jpg' : `.${settings.outputFormat}`;
+      const cleanName = newName.replace(/\.[^.]+$/, '');
+      return { ...f, seoName: cleanName + formatExt };
+    }));
+  }, [settings.outputFormat]);
+
   const removeFile = useCallback((id: string) => {
-    setFiles(prev => prev.filter(f => f.id !== id));
+    setFiles(prev => {
+      const file = prev.find(f => f.id === id);
+      if (file?.convertedPreview) {
+        URL.revokeObjectURL(file.convertedPreview);
+      }
+      return prev.filter(f => f.id !== id);
+    });
   }, []);
 
   const clearAll = useCallback(() => {
+    files.forEach(file => {
+      if (file.convertedPreview) {
+        URL.revokeObjectURL(file.convertedPreview);
+      }
+    });
     setFiles([]);
-  }, []);
+  }, [files]);
 
   const downloadFile = useCallback((id: string) => {
     const file = files.find(f => f.id === id);
-    if (!file?.webpBlob) return;
+    if (!file?.convertedBlob) return;
 
-    const url = URL.createObjectURL(file.webpBlob);
+    const url = URL.createObjectURL(file.convertedBlob);
     const a = document.createElement('a');
     a.href = url;
     a.download = file.seoName;
@@ -193,6 +228,7 @@ export function useImageConverter() {
     resetSettings,
     addFiles,
     convertFile,
+    reconvertAllFiles,
     updateFileName,
     removeFile,
     clearAll,
