@@ -1,4 +1,4 @@
-import { Download, Trash2, AlertTriangle } from 'lucide-react';
+import { Download, Trash2, AlertTriangle, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ImageFile } from '@/hooks/useImageConverter';
@@ -9,10 +9,12 @@ interface FileItemProps {
   onUpdateFileName: (id: string, name: string) => void;
   onDownload: (id: string) => void;
   onRemove: (id: string) => void;
+  onCompare: (file: ImageFile) => void;
 }
 
-export function FileItem({ file, onUpdateFileName, onDownload, onRemove }: FileItemProps) {
+export function FileItem({ file, onUpdateFileName, onDownload, onRemove, onCompare }: FileItemProps) {
   const showWarning = file.originalFile.size > 10 * 1024 * 1024;
+  const isUnder50KB = file.convertedSize > 0 && file.convertedSize < 50 * 1024;
 
   return (
     <div className="bg-secondary border border-border rounded-lg p-5 animate-fade-in">
@@ -24,11 +26,21 @@ export function FileItem({ file, onUpdateFileName, onDownload, onRemove }: FileI
       )}
       
       <div className="flex flex-col md:flex-row gap-4 mb-4">
-        <img
-          src={file.preview}
-          alt={file.originalFile.name}
-          className="w-full md:w-28 h-28 rounded-lg object-cover bg-accent shrink-0"
-        />
+        <div className="relative">
+          <img
+            src={file.preview}
+            alt={file.originalFile.name}
+            className="w-full md:w-28 h-28 rounded-lg object-cover bg-accent shrink-0"
+          />
+          {file.converted && (
+            <button
+              onClick={() => onCompare(file)}
+              className="absolute inset-0 flex items-center justify-center bg-background/60 opacity-0 hover:opacity-100 transition-opacity rounded-lg"
+            >
+              <Eye className="w-6 h-6 text-foreground" />
+            </button>
+          )}
+        </div>
         <div className="flex-1 min-w-0 space-y-2">
           <Input
             value={file.seoName || file.originalFile.name.replace(/\.[^.]+$/, '.webp')}
@@ -55,10 +67,11 @@ export function FileItem({ file, onUpdateFileName, onDownload, onRemove }: FileI
               {formatFileSize(file.originalFile.size)}
             </p>
           </div>
-          <div className="bg-card p-3 rounded-lg border border-border">
+          <div className={`bg-card p-3 rounded-lg border ${isUnder50KB ? 'border-success' : 'border-border'}`}>
             <p className="text-xs text-muted-foreground mb-1">Converted</p>
-            <p className="text-sm font-semibold text-foreground">
-              {formatFileSize(file.webpSize)}
+            <p className={`text-sm font-semibold ${isUnder50KB ? 'text-success' : 'text-foreground'}`}>
+              {formatFileSize(file.convertedSize)}
+              {isUnder50KB && <span className="ml-1">✓</span>}
             </p>
           </div>
           <div className="bg-card p-3 rounded-lg border border-border">
@@ -68,22 +81,32 @@ export function FileItem({ file, onUpdateFileName, onDownload, onRemove }: FileI
             </p>
           </div>
           <div className="bg-card p-3 rounded-lg border border-border">
-            <p className="text-xs text-muted-foreground mb-1">Saved</p>
-            <p className="text-sm font-semibold text-success">
-              {formatFileSize(file.saved)}
+            <p className="text-xs text-muted-foreground mb-1">Dimensions</p>
+            <p className="text-sm font-semibold text-foreground">
+              {file.width} × {file.height}
             </p>
           </div>
         </div>
       )}
       
       <div className="flex flex-wrap gap-2">
+        {file.converted && (
+          <Button
+            variant="outline"
+            onClick={() => onCompare(file)}
+            className="gap-2"
+          >
+            <Eye className="w-4 h-4" />
+            Compare
+          </Button>
+        )}
         <Button
           onClick={() => onDownload(file.id)}
           disabled={!file.converted}
           className="gap-2"
         >
           <Download className="w-4 h-4" />
-          Download WebP
+          Download
         </Button>
         <Button
           variant="destructive"

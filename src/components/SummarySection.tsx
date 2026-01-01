@@ -13,11 +13,12 @@ export function SummarySection({ files }: SummarySectionProps) {
   const totalFiles = convertedFiles.length;
   const avgCompression = convertedFiles.reduce((sum, f) => sum + f.reduction, 0) / totalFiles;
   const totalReduction = convertedFiles.reduce((sum, f) => sum + f.saved, 0);
+  const filesUnder50KB = convertedFiles.filter(f => f.convertedSize < 50 * 1024).length;
 
   return (
     <section className="bg-card rounded-xl p-6 mb-6 shadow-card animate-fade-in">
       <h2 className="text-xl font-bold text-foreground mb-6">Conversion Summary</h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="text-center p-5 bg-secondary rounded-lg border border-border">
           <p className="text-sm text-muted-foreground mb-2">Total Files</p>
           <p className="text-3xl font-bold text-foreground">{totalFiles}</p>
@@ -27,8 +28,12 @@ export function SummarySection({ files }: SummarySectionProps) {
           <p className="text-3xl font-bold text-success">{avgCompression.toFixed(1)}%</p>
         </div>
         <div className="text-center p-5 bg-secondary rounded-lg border border-border">
-          <p className="text-sm text-muted-foreground mb-2">Total Size Reduction</p>
+          <p className="text-sm text-muted-foreground mb-2">Total Saved</p>
           <p className="text-3xl font-bold text-success">{formatFileSize(totalReduction)}</p>
+        </div>
+        <div className="text-center p-5 bg-secondary rounded-lg border border-success">
+          <p className="text-sm text-muted-foreground mb-2">Under 50KB</p>
+          <p className="text-3xl font-bold text-success">{filesUnder50KB}/{totalFiles}</p>
         </div>
       </div>
     </section>
