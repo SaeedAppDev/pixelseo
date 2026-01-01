@@ -8,6 +8,7 @@ export function Footer() {
   const links = [
     { name: 'Features', href: '/features' },
     { name: 'FAQ', href: '/faq' },
+    { name: 'Contact', href: '/contact' },
     { name: 'Privacy', href: '/privacy' },
     { name: 'Terms', href: '/terms' },
     { name: 'Cookies', href: '/cookies' },
@@ -17,7 +18,7 @@ export function Footer() {
   const socialLinks = [
     { icon: Twitter, href: 'https://twitter.com', label: 'Twitter' },
     { icon: Github, href: 'https://github.com', label: 'GitHub' },
-    { icon: Mail, href: 'mailto:contact@pixelseo.com', label: 'Email' },
+    { icon: Mail, href: 'mailto:pixelseo71@gmail.com', label: 'Email' },
   ];
 
   return (
