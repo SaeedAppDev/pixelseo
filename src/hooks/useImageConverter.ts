@@ -89,10 +89,13 @@ export function useImageConverter() {
   }, []);
 
   const addFiles = useCallback(async (newFiles: FileList | File[]) => {
-    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/bmp', 'image/tiff'];
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/bmp', 'image/tiff', 'image/webp'];
     const validFiles = Array.from(newFiles).filter(file => validTypes.includes(file.type));
     
-    if (validFiles.length === 0) return;
+    if (validFiles.length === 0) {
+      toast.error('Please select valid image files (JPG, PNG, GIF, BMP, TIFF, WebP)');
+      return;
+    }
 
     const imageFiles: ImageFile[] = await Promise.all(
       validFiles.map(async (file) => {
