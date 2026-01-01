@@ -1,8 +1,9 @@
-import { Download, Trash2, AlertTriangle, Eye } from 'lucide-react';
+import { Download, Trash2, AlertTriangle, Eye, Sparkles, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ImageFile, SEOMetadata } from '@/hooks/useImageConverter';
 import { formatFileSize } from '@/lib/imageUtils';
 import { SEOMetadataEditor } from './SEOMetadataEditor';
+import { Badge } from '@/components/ui/badge';
 
 interface FileItemProps {
   file: ImageFile;
@@ -51,8 +52,34 @@ export function FileItem({ file, focusKeyword, onUpdateSEO, onDownload, onRemove
           </p>
           
           {file.converting && (
-            <div className="w-full h-2 bg-accent rounded-full overflow-hidden">
-              <div className="h-full bg-primary animate-pulse w-1/2" />
+            <div className="flex items-center gap-2">
+              <div className="w-full h-2 bg-accent rounded-full overflow-hidden">
+                <div className="h-full bg-primary animate-pulse w-1/2" />
+              </div>
+              <span className="text-xs text-muted-foreground whitespace-nowrap">Converting...</span>
+            </div>
+          )}
+
+          {file.aiAnalyzing && (
+            <div className="flex items-center gap-2 text-primary">
+              <Loader2 className="w-4 h-4 animate-spin" />
+              <span className="text-xs">AI analyzing image...</span>
+            </div>
+          )}
+
+          {file.aiAnalyzed && file.aiContent && (
+            <div className="bg-primary/10 border border-primary/20 rounded-lg p-3 space-y-2">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-primary" />
+                <span className="text-xs font-medium text-primary">AI Analysis</span>
+                <Badge variant="secondary" className="text-xs">Detected</Badge>
+              </div>
+              <p className="text-xs text-muted-foreground">{file.aiContent}</p>
+              {file.aiDetectedText && (
+                <p className="text-xs text-foreground">
+                  <span className="font-medium">Text found:</span> {file.aiDetectedText}
+                </p>
+              )}
             </div>
           )}
 

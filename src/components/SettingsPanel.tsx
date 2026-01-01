@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ConversionSettings } from '@/hooks/useImageConverter';
 import { OUTPUT_FORMATS } from '@/lib/imageUtils';
-import { Search } from 'lucide-react';
+import { Search, Sparkles } from 'lucide-react';
 
 interface SettingsPanelProps {
   settings: ConversionSettings;
@@ -44,7 +44,26 @@ export function SettingsPanel({
         </div>
       </div>
 
-      {/* Focus Keyword - Prominent placement */}
+      {/* AI Analysis Toggle */}
+      <div className="mb-6 p-4 bg-gradient-to-r from-primary/10 to-secondary rounded-lg border border-primary/20">
+        <div className="flex items-center justify-between mb-3">
+          <Label className="text-sm font-medium text-foreground flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-primary" />
+            AI-Powered SEO Analysis
+          </Label>
+          <Switch
+            checked={settings.enableAIAnalysis}
+            onCheckedChange={(checked) => onUpdateSettings({ enableAIAnalysis: checked })}
+          />
+        </div>
+        <p className="text-xs text-muted-foreground">
+          {settings.enableAIAnalysis 
+            ? "AI will analyze image content, detect text (OCR), and generate smart SEO metadata."
+            : "Using basic dimension-based analysis. Enable AI for smarter SEO generation."}
+        </p>
+      </div>
+
+      {/* Focus Keyword */}
       <div className="mb-6 p-4 bg-secondary rounded-lg border border-border">
         <Label className="text-sm font-medium text-foreground mb-2 flex items-center gap-2">
           <Search className="w-4 h-4" />
@@ -58,7 +77,9 @@ export function SettingsPanel({
           className="mt-2"
         />
         <p className="text-xs text-muted-foreground mt-2">
-          Enter your target keyword. SEO filename, ALT, and TITLE will be auto-generated based on this keyword and image analysis.
+          {settings.enableAIAnalysis 
+            ? "AI will incorporate this keyword with detected image content for optimal SEO."
+            : "Enter your target keyword for SEO filename, ALT, and TITLE generation."}
         </p>
       </div>
       
