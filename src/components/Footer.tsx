@@ -1,6 +1,6 @@
 import { Twitter, Mail, Heart, Instagram, Facebook } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import pixelSeoIcon from '@/assets/pixelseo-icon.png';
+import pixelSeoLogo from '@/assets/pixelseo-logo-v3.png';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -35,7 +35,7 @@ export function Footer() {
           {/* Brand */}
           <Link to="/" className="flex items-center gap-3 group">
             <img 
-              src={pixelSeoIcon} 
+              src={pixelSeoLogo} 
               alt="PixelSEO Logo" 
               className="w-10 h-10 rounded-lg shadow-md group-hover:scale-105 transition-transform"
             />
