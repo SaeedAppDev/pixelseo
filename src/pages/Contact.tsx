@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
+import { SocialShareButtons } from '@/components/SocialShareButtons';
 import { Mail, User, MessageSquare, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -88,9 +89,10 @@ const Contact = () => {
           <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4 animate-fade-in-up">
             Contact Us
           </h1>
-          <p className="text-lg text-muted-foreground animate-fade-in-up stagger-1">
+          <p className="text-lg text-muted-foreground animate-fade-in-up stagger-1 mb-4">
             Have questions or feedback? We'd love to hear from you.
           </p>
+          <SocialShareButtons title="Contact PixelSEO" />
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">

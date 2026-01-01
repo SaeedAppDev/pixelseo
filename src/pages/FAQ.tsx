@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
+import { SocialShareButtons } from '@/components/SocialShareButtons';
 
 interface FAQItem {
   question: string;
@@ -58,9 +59,10 @@ const FAQ = () => {
           <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4 animate-fade-in-up">
             Frequently Asked Questions
           </h1>
-          <p className="text-lg text-muted-foreground animate-fade-in-up stagger-1">
+          <p className="text-lg text-muted-foreground animate-fade-in-up stagger-1 mb-4">
             Find answers to common questions about PixelSEO.
           </p>
+          <SocialShareButtons title="PixelSEO FAQ - Frequently Asked Questions" />
         </div>
 
         <div className="bg-card rounded-xl p-6 md:p-8 shadow-card animate-fade-in">
