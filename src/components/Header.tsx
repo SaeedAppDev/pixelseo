@@ -11,10 +11,10 @@ export function Header() {
         <div>
           <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground flex items-center gap-3">
             <Rocket className="w-8 h-8 text-primary" />
-            <span>WebP Image Converter</span>
+            <span>PixelSEO</span>
           </h1>
           <p className="text-muted-foreground mt-2 text-sm md:text-base">
-            Convert images to WebP format with advanced compression, quality control, and SEO-optimized filenames
+            AI-Powered Image Optimizer with Smart SEO Filenames & WebP Conversion
           </p>
         </div>
         <Button
