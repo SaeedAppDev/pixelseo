@@ -46,8 +46,8 @@ const LiveVisitorCounter = () => {
   }, []);
 
   return (
-    <div className="fixed bottom-4 left-4 z-50">
-      <div className="flex items-center gap-2 bg-background/80 backdrop-blur-sm border border-border rounded-full px-4 py-2 shadow-lg">
+    <div className="fixed bottom-4 left-1/2 -translate-x-1/2 md:left-4 md:translate-x-0 z-50">
+      <div className="flex items-center gap-2 bg-background/80 backdrop-blur-sm border border-border rounded-full px-3 py-1.5 md:px-4 md:py-2 shadow-lg">
         <div className="relative flex items-center">
           <span className="absolute inline-flex h-3 w-3 rounded-full bg-green-500 opacity-75 animate-ping" />
           <span className="relative inline-flex h-3 w-3 rounded-full bg-green-500" />

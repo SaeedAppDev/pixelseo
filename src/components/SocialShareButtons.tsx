@@ -48,7 +48,7 @@ export function SocialShareButtons({ title, url }: SocialShareButtonsProps) {
   };
 
   return (
-    <div className="flex items-center gap-2 flex-wrap">
+    <div className="flex items-center justify-center gap-2 flex-wrap">
       <span className="text-sm text-muted-foreground mr-1">Share:</span>
       {shareLinks.map((link) => (
         <Button
