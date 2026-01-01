@@ -10,6 +10,7 @@ import { SummarySection } from '@/components/SummarySection';
 import { InfoSection } from '@/components/InfoSection';
 import { SocialShareButtons } from '@/components/SocialShareButtons';
 import { StructuredData } from '@/components/StructuredData';
+import { ScrollProgressBar } from '@/components/ScrollProgressBar';
 import { useImageConverter } from '@/hooks/useImageConverter';
 import { OUTPUT_FORMATS } from '@/lib/imageUtils';
 
@@ -87,6 +88,7 @@ const Index = () => {
   return (
     <main className="min-h-screen bg-background">
       <StructuredData />
+      <ScrollProgressBar />
       <div className="max-w-6xl mx-auto px-4 py-6">
         <Header />
         <UploadArea onFilesSelected={handleFilesSelected} />

@@ -3,6 +3,8 @@ import { ChevronDown } from 'lucide-react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { SocialShareButtons } from '@/components/SocialShareButtons';
+import { ScrollProgressBar } from '@/components/ScrollProgressBar';
+import { FAQStructuredData } from '@/components/structured-data/FAQStructuredData';
 
 interface FAQItem {
   question: string;
@@ -53,6 +55,8 @@ const FAQ = () => {
 
   return (
     <main className="min-h-screen bg-background">
+      <FAQStructuredData faqs={faqs} />
+      <ScrollProgressBar />
       <div className="max-w-4xl mx-auto px-4 py-6">
         <Header />
         <div className="mb-8">
