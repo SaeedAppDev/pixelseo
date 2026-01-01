@@ -52,11 +52,23 @@ export function FileItem({ file, focusKeyword, onUpdateSEO, onDownload, onRemove
           </p>
           
           {file.converting && (
-            <div className="flex items-center gap-2">
-              <div className="w-full h-2 bg-accent rounded-full overflow-hidden">
-                <div className="h-full bg-primary animate-pulse w-1/2" />
+            <div className="space-y-2">
+              <div className="flex items-center gap-3">
+                <div className="relative flex-1 h-3 bg-accent rounded-full overflow-hidden">
+                  {/* Animated progress background */}
+                  <div className="absolute inset-0 animate-shimmer rounded-full" />
+                  {/* Glowing wave effect */}
+                  <div className="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-transparent via-primary to-transparent animate-progress-wave" />
+                </div>
+                <div className="animate-compress">
+                  <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
+                    <Loader2 className="w-4 h-4 text-primary animate-spin" />
+                  </div>
+                </div>
               </div>
-              <span className="text-xs text-muted-foreground whitespace-nowrap">Converting...</span>
+              <p className="text-xs text-primary font-medium animate-pulse">
+                Compressing & Optimizing...
+              </p>
             </div>
           )}
 
