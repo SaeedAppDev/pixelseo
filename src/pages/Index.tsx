@@ -8,6 +8,7 @@ import { SettingsPanel } from '@/components/SettingsPanel';
 import { FileList } from '@/components/FileList';
 import { SummarySection } from '@/components/SummarySection';
 import { InfoSection } from '@/components/InfoSection';
+import { SocialShareButtons } from '@/components/SocialShareButtons';
 import { useImageConverter } from '@/hooks/useImageConverter';
 import { OUTPUT_FORMATS } from '@/lib/imageUtils';
 
@@ -106,6 +107,9 @@ const Index = () => {
         <SummarySection files={files} />
         <FeaturesSection />
         <InfoSection />
+        <div className="my-6">
+          <SocialShareButtons title="PixelSEO - AI Image Optimizer for SEO" />
+        </div>
         <Footer />
       </div>
     </main>
