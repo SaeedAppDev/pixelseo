@@ -143,6 +143,7 @@ export interface ConversionResult {
   seoName: string;
   width: number;
   height: number;
+  hasTransparency: boolean;
 }
 
 // Aggressive compression to target under 50KB when possible
@@ -299,7 +300,7 @@ export function convertImage(
           (blob) => {
             if (blob) {
               const seoName = generateSEOFilename(file.name, targetWidth, targetHeight, hasTransparency, format);
-              resolve({ blob, seoName, width: targetWidth, height: targetHeight });
+              resolve({ blob, seoName, width: targetWidth, height: targetHeight, hasTransparency });
             } else {
               reject(new Error(`${format.toUpperCase()} conversion failed`));
             }

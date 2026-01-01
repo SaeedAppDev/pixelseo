@@ -1,18 +1,19 @@
 import { Download, Trash2, AlertTriangle, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { ImageFile } from '@/hooks/useImageConverter';
+import { ImageFile, SEOMetadata } from '@/hooks/useImageConverter';
 import { formatFileSize } from '@/lib/imageUtils';
+import { SEOMetadataEditor } from './SEOMetadataEditor';
 
 interface FileItemProps {
   file: ImageFile;
-  onUpdateFileName: (id: string, name: string) => void;
+  focusKeyword: string;
+  onUpdateSEO: (id: string, seo: Partial<SEOMetadata>) => void;
   onDownload: (id: string) => void;
   onRemove: (id: string) => void;
   onCompare: (file: ImageFile) => void;
 }
 
-export function FileItem({ file, onUpdateFileName, onDownload, onRemove, onCompare }: FileItemProps) {
+export function FileItem({ file, focusKeyword, onUpdateSEO, onDownload, onRemove, onCompare }: FileItemProps) {
   const showWarning = file.originalFile.size > 10 * 1024 * 1024;
   const isUnder50KB = file.convertedSize > 0 && file.convertedSize < 50 * 1024;
 
@@ -42,11 +43,9 @@ export function FileItem({ file, onUpdateFileName, onDownload, onRemove, onCompa
           )}
         </div>
         <div className="flex-1 min-w-0 space-y-2">
-          <Input
-            value={file.seoName || file.originalFile.name.replace(/\.[^.]+$/, '.webp')}
-            onChange={(e) => onUpdateFileName(file.id, e.target.value)}
-            className="font-mono text-sm"
-          />
+          <p className="text-sm text-muted-foreground truncate">
+            Original: {file.originalFile.name}
+          </p>
           <p className="text-sm text-muted-foreground">
             {formatFileSize(file.originalFile.size)} • {file.originalFile.type}
           </p>
@@ -55,6 +54,14 @@ export function FileItem({ file, onUpdateFileName, onDownload, onRemove, onCompa
             <div className="w-full h-2 bg-accent rounded-full overflow-hidden">
               <div className="h-full bg-primary animate-pulse w-1/2" />
             </div>
+          )}
+
+          {file.converted && (
+            <SEOMetadataEditor
+              file={file}
+              focusKeyword={focusKeyword}
+              onUpdateSEO={onUpdateSEO}
+            />
           )}
         </div>
       </div>
