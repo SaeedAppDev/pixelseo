@@ -3,7 +3,7 @@ import { Moon, Sun, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/hooks/useTheme';
 import { Link, useLocation } from 'react-router-dom';
-import pixelSeoLogo from '@/assets/pixelseo-logo-v3.png';
+import pixelSeoIcon from '@/assets/pixelseo-icon.png';
 
 const navLinks = [
   { name: 'Home', href: '/' },
@@ -25,7 +25,7 @@ export function Header() {
           <div className="relative">
             <div className="absolute inset-0 bg-primary/20 rounded-xl blur-lg group-hover:bg-primary/30 transition-colors" />
             <img 
-              src={pixelSeoLogo} 
+              src={pixelSeoIcon} 
               alt="PixelSEO Logo" 
               className="relative w-10 h-10 md:w-12 md:h-12 rounded-xl shadow-lg group-hover:scale-105 transition-transform"
             />

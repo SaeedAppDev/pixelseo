@@ -1,6 +1,6 @@
 import { Twitter, Mail, Heart, Instagram, Facebook } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import pixelSeoLogo from '@/assets/pixelseo-logo-v3.png';
+import pixelSeoIcon from '@/assets/pixelseo-icon.png';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -31,11 +31,11 @@ export function Footer() {
     <footer className="bg-card rounded-xl p-6 md:p-8 mt-6 shadow-card animate-fade-in">
       <div className="flex flex-col gap-6">
         {/* Top section */}
-        <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-6">
+        <div className="flex flex-col items-center md:flex-row md:justify-between md:items-start gap-6 text-center md:text-left">
           {/* Brand */}
           <Link to="/" className="flex items-center gap-3 group">
             <img 
-              src={pixelSeoLogo} 
+              src={pixelSeoIcon} 
               alt="PixelSEO Logo" 
               className="w-10 h-10 rounded-lg shadow-md group-hover:scale-105 transition-transform"
             />
@@ -48,7 +48,7 @@ export function Footer() {
           </Link>
 
           {/* Links */}
-          <nav className="flex flex-wrap gap-4 md:gap-6">
+          <nav className="flex flex-wrap justify-center md:justify-start gap-4 md:gap-6">
             {links.map((link) => (
               <Link
                 key={link.name}
@@ -81,9 +81,9 @@ export function Footer() {
         <div className="h-px bg-border" />
 
         {/* Bottom section */}
-        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-3 text-xs text-muted-foreground">
+        <div className="flex flex-col items-center md:flex-row md:justify-between md:items-center gap-3 text-xs text-muted-foreground text-center">
           <p>© {currentYear} PixelSEO. All rights reserved.</p>
-          <p className="flex items-center gap-1">
+          <p className="flex items-center justify-center gap-1">
             Made with <Heart className="w-3 h-3 text-red-500 fill-red-500" /> for better web performance
           </p>
         </div>
