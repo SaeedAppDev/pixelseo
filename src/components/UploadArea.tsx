@@ -58,13 +58,13 @@ export function UploadArea({ onFilesSelected }: UploadAreaProps) {
           Drag & drop images here
         </p>
         <p className="text-sm text-muted-foreground">
-          or click to select files (JPG, JPEG, PNG up to 50MB each)
+          or click to select files (JPG, JPEG, PNG, WebP up to 50MB each)
         </p>
         <input
           ref={inputRef}
           type="file"
           multiple
-          accept="image/jpeg,image/jpg,image/png"
+          accept="image/jpeg,image/jpg,image/png,image/webp"
           onChange={handleChange}
           className="hidden"
         />
