@@ -4,7 +4,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ConversionSettings } from '@/hooks/useImageConverter';
-import { OUTPUT_FORMATS, OutputFormat } from '@/lib/imageUtils';
+import { OUTPUT_FORMATS } from '@/lib/imageUtils';
+import { Search } from 'lucide-react';
 
 interface SettingsPanelProps {
   settings: ConversionSettings;
@@ -41,6 +42,24 @@ export function SettingsPanel({
             Reset Settings
           </Button>
         </div>
+      </div>
+
+      {/* Focus Keyword - Prominent placement */}
+      <div className="mb-6 p-4 bg-secondary rounded-lg border border-border">
+        <Label className="text-sm font-medium text-foreground mb-2 flex items-center gap-2">
+          <Search className="w-4 h-4" />
+          Focus Keyword (SEO)
+        </Label>
+        <Input
+          type="text"
+          placeholder="e.g., blue-running-shoes, company-logo, product-photo"
+          value={settings.focusKeyword}
+          onChange={(e) => onUpdateSettings({ focusKeyword: e.target.value.toLowerCase().replace(/[^a-z0-9-\s]/g, '') })}
+          className="mt-2"
+        />
+        <p className="text-xs text-muted-foreground mt-2">
+          Enter your target keyword. SEO filename, ALT, and TITLE will be auto-generated based on this keyword and image analysis.
+        </p>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

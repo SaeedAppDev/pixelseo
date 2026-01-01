@@ -1,5 +1,15 @@
 import { useState, useCallback } from 'react';
 import { convertImage, ConversionResult, OutputFormat } from '@/lib/imageUtils';
+import { generateSEOMetadata, SEOAnalysis } from '@/lib/seoUtils';
+
+export interface SEOMetadata {
+  imageType: string;
+  aspectRatioLabel: string;
+  isTransparent: boolean;
+  filename: string;
+  altText: string;
+  titleText: string;
+}
 
 export interface ImageFile {
   id: string;
@@ -15,6 +25,7 @@ export interface ImageFile {
   height: number;
   preview: string;
   convertedPreview: string;
+  seoMetadata: SEOMetadata | null;
 }
 
 export interface ConversionSettings {
@@ -27,6 +38,7 @@ export interface ConversionSettings {
   outputFormat: OutputFormat;
   maxCompress: boolean;
   targetSize: number;
+  focusKeyword: string;
 }
 
 const defaultSettings: ConversionSettings = {
@@ -39,6 +51,7 @@ const defaultSettings: ConversionSettings = {
   outputFormat: 'webp',
   maxCompress: true,
   targetSize: 50,
+  focusKeyword: '',
 };
 
 export function useImageConverter() {
@@ -96,6 +109,7 @@ export function useImageConverter() {
           height: 0,
           preview,
           convertedPreview: '',
+          seoMetadata: null,
         };
       })
     );
@@ -146,6 +160,15 @@ export function useImageConverter() {
       // Create preview URL for converted image
       const convertedPreview = URL.createObjectURL(result.blob);
 
+      // Generate SEO metadata based on focus keyword and image analysis
+      const seoMetadata = generateSEOMetadata(
+        currentSettings.focusKeyword,
+        result.width,
+        result.height,
+        result.hasTransparency,
+        currentSettings.outputFormat
+      );
+
       setFiles(prev => prev.map(f => 
         f.id === id ? {
           ...f,
@@ -155,10 +178,11 @@ export function useImageConverter() {
           convertedSize,
           reduction,
           saved,
-          seoName: result.seoName,
+          seoName: seoMetadata.filename,
           width: result.width,
           height: result.height,
           convertedPreview,
+          seoMetadata,
         } : f
       ));
     } catch (error) {
@@ -184,9 +208,25 @@ export function useImageConverter() {
       if (f.id !== id) return f;
       const formatExt = settings.outputFormat === 'jpeg' ? '.jpg' : `.${settings.outputFormat}`;
       const cleanName = newName.replace(/\.[^.]+$/, '');
-      return { ...f, seoName: cleanName + formatExt };
+      return { 
+        ...f, 
+        seoName: cleanName + formatExt,
+        seoMetadata: f.seoMetadata ? { ...f.seoMetadata, filename: cleanName + formatExt } : null,
+      };
     }));
   }, [settings.outputFormat]);
+
+  const updateSEOMetadata = useCallback((id: string, seo: Partial<SEOMetadata>) => {
+    setFiles(prev => prev.map(f => {
+      if (f.id !== id || !f.seoMetadata) return f;
+      const updated = { ...f.seoMetadata, ...seo };
+      return {
+        ...f,
+        seoMetadata: updated,
+        seoName: updated.filename,
+      };
+    }));
+  }, []);
 
   const removeFile = useCallback((id: string) => {
     setFiles(prev => {
@@ -230,6 +270,7 @@ export function useImageConverter() {
     convertFile,
     reconvertAllFiles,
     updateFileName,
+    updateSEOMetadata,
     removeFile,
     clearAll,
     downloadFile,

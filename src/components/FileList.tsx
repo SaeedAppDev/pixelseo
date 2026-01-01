@@ -4,11 +4,13 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { FileItem } from './FileItem';
 import { ComparisonSlider } from './ComparisonSlider';
-import { ImageFile } from '@/hooks/useImageConverter';
+import { BatchProgressBar } from './BatchProgressBar';
+import { ImageFile, SEOMetadata } from '@/hooks/useImageConverter';
 
 interface FileListProps {
   files: ImageFile[];
-  onUpdateFileName: (id: string, name: string) => void;
+  focusKeyword: string;
+  onUpdateSEO: (id: string, seo: Partial<SEOMetadata>) => void;
   onDownload: (id: string) => void;
   onRemove: (id: string) => void;
   onDownloadAll: () => void;
@@ -17,7 +19,8 @@ interface FileListProps {
 
 export function FileList({
   files,
-  onUpdateFileName,
+  focusKeyword,
+  onUpdateSEO,
   onDownload,
   onRemove,
   onDownloadAll,
@@ -30,6 +33,8 @@ export function FileList({
 
   return (
     <>
+      <BatchProgressBar files={files} />
+      
       <section className="bg-card rounded-xl p-6 mb-6 shadow-card animate-fade-in">
         <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6 pb-4 border-b border-border">
           <div className="flex items-center gap-3">
@@ -57,7 +62,8 @@ export function FileList({
             <FileItem
               key={file.id}
               file={file}
-              onUpdateFileName={onUpdateFileName}
+              focusKeyword={focusKeyword}
+              onUpdateSEO={onUpdateSEO}
               onDownload={onDownload}
               onRemove={onRemove}
               onCompare={setCompareFile}

@@ -17,7 +17,7 @@ const Index = () => {
     resetSettings,
     addFiles,
     reconvertAllFiles,
-    updateFileName,
+    updateSEOMetadata,
     removeFile,
     clearAll,
     downloadFile,
@@ -94,7 +94,8 @@ const Index = () => {
         />
         <FileList
           files={files}
-          onUpdateFileName={updateFileName}
+          focusKeyword={settings.focusKeyword}
+          onUpdateSEO={updateSEOMetadata}
           onDownload={downloadFile}
           onRemove={removeFile}
           onDownloadAll={handleDownloadAll}
