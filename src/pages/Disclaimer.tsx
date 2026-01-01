@@ -1,6 +1,7 @@
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { SocialShareButtons } from '@/components/SocialShareButtons';
+import { CanonicalUrl } from '@/components/CanonicalUrl';
 import { AlertTriangle, FileWarning, Scale, Sparkles, Link2, RefreshCw } from 'lucide-react';
 
 const sections = [
@@ -39,6 +40,7 @@ const sections = [
 const Disclaimer = () => {
   return (
     <main className="min-h-screen bg-background">
+      <CanonicalUrl />
       <div className="max-w-6xl mx-auto px-4 py-6">
         <Header />
         

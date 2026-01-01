@@ -4,6 +4,7 @@ import { Footer } from '@/components/Footer';
 import { SocialShareButtons } from '@/components/SocialShareButtons';
 import { ScrollProgressBar } from '@/components/ScrollProgressBar';
 import { ContactStructuredData } from '@/components/structured-data/ContactStructuredData';
+import { CanonicalUrl } from '@/components/CanonicalUrl';
 import { Mail, User, MessageSquare, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -83,6 +84,7 @@ const Contact = () => {
   return (
     <main className="min-h-screen bg-background">
       <ContactStructuredData />
+      <CanonicalUrl />
       <ScrollProgressBar />
       <div className="max-w-6xl mx-auto px-4 py-6">
         <Header />

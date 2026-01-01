@@ -1,27 +1,29 @@
 import { Helmet } from 'react-helmet-async';
 
+const BASE_URL = 'https://www.pixelseo.net';
+
 export const StructuredData = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "WebSite",
-        "@id": "https://pixelseo.net/#website",
-        "url": "https://pixelseo.net",
+        "@id": `${BASE_URL}/#website`,
+        "url": BASE_URL,
         "name": "PixelSEO",
         "description": "AI-powered image optimization tool with smart SEO filenames, OCR text detection, and WebP conversion.",
         "publisher": {
-          "@id": "https://pixelseo.net/#organization"
+          "@id": `${BASE_URL}/#organization`
         }
       },
       {
         "@type": "Organization",
-        "@id": "https://pixelseo.net/#organization",
+        "@id": `${BASE_URL}/#organization`,
         "name": "PixelSEO",
-        "url": "https://pixelseo.net",
+        "url": BASE_URL,
         "logo": {
           "@type": "ImageObject",
-          "url": "https://pixelseo.net/og-image.png"
+          "url": `${BASE_URL}/og-image.png`
         },
         "sameAs": [
           "https://twitter.com/PixelSEO",
@@ -30,9 +32,9 @@ export const StructuredData = () => {
       },
       {
         "@type": "WebApplication",
-        "@id": "https://pixelseo.net/#application",
+        "@id": `${BASE_URL}/#application`,
         "name": "PixelSEO Image Optimizer",
-        "url": "https://pixelseo.net",
+        "url": BASE_URL,
         "description": "Free AI-powered image optimization tool that automatically generates SEO-friendly filenames, extracts text via OCR, and converts images to WebP format for better web performance.",
         "applicationCategory": "MultimediaApplication",
         "operatingSystem": "Any",
@@ -50,26 +52,26 @@ export const StructuredData = () => {
           "Batch processing support",
           "No registration required"
         ],
-        "screenshot": "https://pixelseo.net/og-image.png",
+        "screenshot": `${BASE_URL}/og-image.png`,
         "provider": {
-          "@id": "https://pixelseo.net/#organization"
+          "@id": `${BASE_URL}/#organization`
         }
       },
       {
         "@type": "BreadcrumbList",
-        "@id": "https://pixelseo.net/#breadcrumb",
+        "@id": `${BASE_URL}/#breadcrumb`,
         "itemListElement": [
           {
             "@type": "ListItem",
             "position": 1,
             "name": "Home",
-            "item": "https://pixelseo.net"
+            "item": BASE_URL
           }
         ]
       },
       {
         "@type": "FAQPage",
-        "@id": "https://pixelseo.net/#faq",
+        "@id": `${BASE_URL}/#faq`,
         "mainEntity": [
           {
             "@type": "Question",

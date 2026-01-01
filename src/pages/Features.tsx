@@ -4,11 +4,13 @@ import { Footer } from '@/components/Footer';
 import { SocialShareButtons } from '@/components/SocialShareButtons';
 import { ScrollProgressBar } from '@/components/ScrollProgressBar';
 import { FeaturesStructuredData } from '@/components/structured-data/FeaturesStructuredData';
+import { CanonicalUrl } from '@/components/CanonicalUrl';
 
 const Features = () => {
   return (
     <main className="min-h-screen bg-background">
       <FeaturesStructuredData />
+      <CanonicalUrl />
       <ScrollProgressBar />
       <div className="max-w-6xl mx-auto px-4 py-6">
         <Header />
