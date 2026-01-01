@@ -3,7 +3,7 @@ import { Moon, Sun, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/hooks/useTheme';
 import { Link, useLocation } from 'react-router-dom';
-import pixelSeoLogo from '@/assets/pixelseo-logo-v2.png';
+import pixelSeoLogo from '@/assets/pixelseo-logo-v3.png';
 
 const navLinks = [
   { name: 'Home', href: '/' },

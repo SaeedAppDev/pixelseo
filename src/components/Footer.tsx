@@ -1,6 +1,6 @@
 import { Github, Twitter, Mail, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import pixelSeoLogo from '@/assets/pixelseo-logo-v2.png';
+import pixelSeoLogo from '@/assets/pixelseo-logo-v3.png';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
