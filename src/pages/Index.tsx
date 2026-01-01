@@ -1,6 +1,7 @@
 import JSZip from 'jszip';
 import { toast } from 'sonner';
 import { Header } from '@/components/Header';
+import { Footer } from '@/components/Footer';
 import { UploadArea } from '@/components/UploadArea';
 import { SettingsPanel } from '@/components/SettingsPanel';
 import { FileList } from '@/components/FileList';
@@ -103,6 +104,7 @@ const Index = () => {
         />
         <SummarySection files={files} />
         <InfoSection />
+        <Footer />
       </div>
     </main>
   );
