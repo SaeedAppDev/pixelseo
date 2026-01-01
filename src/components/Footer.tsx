@@ -1,14 +1,15 @@
 import { Github, Twitter, Mail, Heart } from 'lucide-react';
-import pixelSeoLogo from '@/assets/pixelseo-logo.png';
+import { Link } from 'react-router-dom';
+import pixelSeoLogo from '@/assets/pixelseo-logo-v2.png';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
 
   const links = [
-    { name: 'Features', href: '#features' },
-    { name: 'FAQ', href: '#faq' },
-    { name: 'Privacy', href: '#privacy' },
-    { name: 'Terms', href: '#terms' },
+    { name: 'Features', href: '/features' },
+    { name: 'FAQ', href: '/faq' },
+    { name: 'Privacy', href: '/privacy' },
+    { name: 'Terms', href: '/terms' },
   ];
 
   const socialLinks = [
@@ -23,28 +24,30 @@ export function Footer() {
         {/* Top section */}
         <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-6">
           {/* Brand */}
-          <div className="flex items-center gap-3">
+          <Link to="/" className="flex items-center gap-3 group">
             <img 
               src={pixelSeoLogo} 
               alt="PixelSEO Logo" 
-              className="w-10 h-10 rounded-lg shadow-md"
+              className="w-10 h-10 rounded-lg shadow-md group-hover:scale-105 transition-transform"
             />
             <div>
-              <h3 className="font-bold text-lg text-foreground">PixelSEO</h3>
-              <p className="text-xs text-muted-foreground">AI-Powered Image Optimizer</p>
+              <h3 className="font-bold text-lg text-foreground">
+                Pixel<span className="text-primary">SEO</span>
+              </h3>
+              <p className="text-xs text-muted-foreground">AI Image Optimizer</p>
             </div>
-          </div>
+          </Link>
 
           {/* Links */}
           <nav className="flex flex-wrap gap-4 md:gap-6">
             {links.map((link) => (
-              <a
+              <Link
                 key={link.name}
-                href={link.href}
+                to={link.href}
                 className="text-sm text-muted-foreground hover:text-primary transition-colors"
               >
                 {link.name}
-              </a>
+              </Link>
             ))}
           </nav>
 
