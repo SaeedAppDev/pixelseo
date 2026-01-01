@@ -1,6 +1,7 @@
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { SocialShareButtons } from '@/components/SocialShareButtons';
+import { CanonicalUrl } from '@/components/CanonicalUrl';
 import { Shield, Eye, Lock, Server, Trash2, Mail } from 'lucide-react';
 
 const Privacy = () => {
@@ -39,6 +40,7 @@ const Privacy = () => {
 
   return (
     <main className="min-h-screen bg-background">
+      <CanonicalUrl />
       <div className="max-w-4xl mx-auto px-4 py-6">
         <Header />
         <div className="mb-8">

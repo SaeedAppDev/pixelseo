@@ -5,6 +5,7 @@ import { Footer } from '@/components/Footer';
 import { SocialShareButtons } from '@/components/SocialShareButtons';
 import { ScrollProgressBar } from '@/components/ScrollProgressBar';
 import { FAQStructuredData } from '@/components/structured-data/FAQStructuredData';
+import { CanonicalUrl } from '@/components/CanonicalUrl';
 
 interface FAQItem {
   question: string;
@@ -56,6 +57,7 @@ const FAQ = () => {
   return (
     <main className="min-h-screen bg-background">
       <FAQStructuredData faqs={faqs} />
+      <CanonicalUrl />
       <ScrollProgressBar />
       <div className="max-w-4xl mx-auto px-4 py-6">
         <Header />
