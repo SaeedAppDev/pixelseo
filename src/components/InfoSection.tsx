@@ -43,19 +43,19 @@ export function InfoSection() {
 
   return (
     <>
-      <section className="bg-card rounded-xl p-6 md:p-8 mb-6 shadow-card animate-fade-in">
-        <h2 className="text-xl md:text-2xl font-bold text-foreground mb-4">Why Choose <strong>PixelSEO</strong> for WebP Conversion?</h2>
-        <p className="text-muted-foreground mb-6">
+      <section className="bg-card rounded-xl p-4 md:p-8 mb-4 md:mb-6 shadow-card animate-fade-in">
+        <h2 className="text-lg md:text-xl lg:text-2xl font-bold text-foreground mb-3 md:mb-4">Why Choose <strong>PixelSEO</strong> for WebP Conversion?</h2>
+        <p className="text-sm md:text-base text-muted-foreground mb-4 md:mb-6">
           <strong>PixelSEO</strong> uses the modern WebP format that provides superior compression compared to JPEG and PNG. 
           It can reduce file sizes by 25-35% while maintaining the same visual quality, resulting in 
           faster page loads and better user experience.
         </p>
-        <h3 className="text-lg font-semibold text-foreground mb-4">Key Benefits of Using PixelSEO</h3>
-        <ol className="space-y-3 list-decimal list-inside">
+        <h3 className="text-base md:text-lg font-semibold text-foreground mb-3 md:mb-4">Key Benefits of Using PixelSEO</h3>
+        <ol className="space-y-2 md:space-y-3 list-decimal list-inside">
           {features.map((feature, index) => (
-            <li key={index} className="text-muted-foreground">
+            <li key={index} className="text-sm md:text-base text-muted-foreground">
               <span className="inline-flex items-center gap-2">
-                <CheckCircle className="w-5 h-5 text-success shrink-0 inline" />
+                <CheckCircle className="w-4 h-4 md:w-5 md:h-5 text-success shrink-0 inline" />
                 <span>{feature}</span>
               </span>
             </li>
@@ -63,9 +63,9 @@ export function InfoSection() {
         </ol>
       </section>
 
-      <section className="bg-card rounded-xl p-6 md:p-8 mb-6 shadow-card animate-fade-in">
-        <h2 className="text-xl md:text-2xl font-bold text-foreground mb-6"><strong>PixelSEO</strong> Frequently Asked Questions</h2>
-        <div className="space-y-3">
+      <section className="bg-card rounded-xl p-4 md:p-8 mb-4 md:mb-6 shadow-card animate-fade-in">
+        <h2 className="text-lg md:text-xl lg:text-2xl font-bold text-foreground mb-4 md:mb-6"><strong>PixelSEO</strong> Frequently Asked Questions</h2>
+        <div className="space-y-2 md:space-y-3">
           {faqs.map((faq, index) => (
             <div
               key={index}
@@ -73,17 +73,17 @@ export function InfoSection() {
             >
               <button
                 onClick={() => toggleFaq(index)}
-                className="w-full flex justify-between items-center p-4 bg-secondary hover:bg-accent text-left font-medium text-foreground transition-colors"
+                className="w-full flex justify-between items-center p-3 md:p-4 bg-secondary hover:bg-accent text-left font-medium text-sm md:text-base text-foreground transition-colors"
               >
-                <span>{faq.question}</span>
+                <span className="pr-2">{faq.question}</span>
                 {openFaq === index ? (
-                  <ChevronUp className="w-5 h-5 text-muted-foreground shrink-0" />
+                  <ChevronUp className="w-4 h-4 md:w-5 md:h-5 text-muted-foreground shrink-0" />
                 ) : (
-                  <ChevronDown className="w-5 h-5 text-muted-foreground shrink-0" />
+                  <ChevronDown className="w-4 h-4 md:w-5 md:h-5 text-muted-foreground shrink-0" />
                 )}
               </button>
               {openFaq === index && (
-                <div className="p-4 text-muted-foreground border-t border-border">
+                <div className="p-3 md:p-4 text-sm md:text-base text-muted-foreground border-t border-border">
                   {faq.answer}
                 </div>
               )}

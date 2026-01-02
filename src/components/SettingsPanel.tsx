@@ -29,34 +29,34 @@ export function SettingsPanel({
   };
 
   return (
-    <section className="bg-card rounded-xl p-6 mb-6 shadow-card animate-fade-in">
-      <div className="flex justify-between items-center mb-6 pb-4 border-b border-border">
-        <h2 className="text-lg font-semibold text-foreground">Conversion Settings</h2>
-        <div className="flex gap-2">
+    <section className="bg-card rounded-xl p-4 md:p-6 mb-4 md:mb-6 shadow-card animate-fade-in">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 md:mb-6 pb-4 border-b border-border">
+        <h2 className="text-base md:text-lg font-semibold text-foreground">Conversion Settings</h2>
+        <div className="flex gap-2 w-full sm:w-auto">
           {hasFiles && onReconvert && (
-            <Button variant="default" onClick={onReconvert}>
+            <Button variant="default" onClick={onReconvert} size="sm" className="flex-1 sm:flex-none text-xs md:text-sm">
               Re-convert All
             </Button>
           )}
-          <Button variant="secondary" onClick={onResetSettings}>
+          <Button variant="secondary" onClick={onResetSettings} size="sm" className="flex-1 sm:flex-none text-xs md:text-sm">
             Reset Settings
           </Button>
         </div>
       </div>
 
       {/* AI Analysis Toggle */}
-      <div className="mb-6 p-4 bg-gradient-to-r from-primary/10 to-secondary rounded-lg border border-primary/20">
-        <div className="flex items-center justify-between mb-3">
-          <Label className="text-sm font-medium text-foreground flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-primary" />
-            AI-Powered SEO Analysis
+      <div className="mb-4 md:mb-6 p-3 md:p-4 bg-gradient-to-r from-primary/10 to-secondary rounded-lg border border-primary/20">
+        <div className="flex items-center justify-between mb-2 md:mb-3">
+          <Label className="text-xs md:text-sm font-medium text-foreground flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-primary shrink-0" />
+            <span>AI-Powered SEO Analysis</span>
           </Label>
           <Switch
             checked={settings.enableAIAnalysis}
             onCheckedChange={(checked) => onUpdateSettings({ enableAIAnalysis: checked })}
           />
         </div>
-        <p className="text-xs text-muted-foreground">
+        <p className="text-[10px] md:text-xs text-muted-foreground">
           {settings.enableAIAnalysis 
             ? "AI will analyze image content, detect text (OCR), and generate smart SEO metadata."
             : "Using basic dimension-based analysis. Enable AI for smarter SEO generation."}
@@ -64,35 +64,35 @@ export function SettingsPanel({
       </div>
 
       {/* Focus Keyword */}
-      <div className="mb-6 p-4 bg-secondary rounded-lg border border-border">
-        <Label className="text-sm font-medium text-foreground mb-2 flex items-center gap-2">
-          <Search className="w-4 h-4" />
-          Focus Keyword (SEO)
+      <div className="mb-4 md:mb-6 p-3 md:p-4 bg-secondary rounded-lg border border-border">
+        <Label className="text-xs md:text-sm font-medium text-foreground mb-2 flex items-center gap-2">
+          <Search className="w-4 h-4 shrink-0" />
+          <span>Focus Keyword (SEO)</span>
         </Label>
         <Input
           type="text"
-          placeholder="e.g., blue-running-shoes, company-logo, product-photo"
+          placeholder="e.g., blue-running-shoes"
           value={settings.focusKeyword}
           onChange={(e) => onUpdateSettings({ focusKeyword: e.target.value.toLowerCase().replace(/[^a-z0-9-\s]/g, '') })}
-          className="mt-2"
+          className="mt-2 text-sm"
         />
-        <p className="text-xs text-muted-foreground mt-2">
+        <p className="text-[10px] md:text-xs text-muted-foreground mt-2">
           {settings.enableAIAnalysis 
             ? "AI will incorporate this keyword with detected image content for optimal SEO."
             : "Enter your target keyword for SEO filename, ALT, and TITLE generation."}
         </p>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
         {/* Output Format */}
-        <div className="space-y-2">
-          <Label className="text-sm font-medium text-muted-foreground">Output Format</Label>
-          <div className="flex flex-wrap gap-2">
+        <div className="space-y-2 col-span-2 md:col-span-1">
+          <Label className="text-xs md:text-sm font-medium text-muted-foreground">Output Format</Label>
+          <div className="flex flex-wrap gap-1.5 md:gap-2">
             {OUTPUT_FORMATS.map((format) => (
               <button
                 key={format.value}
                 onClick={() => onUpdateSettings({ outputFormat: format.value })}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                className={`px-2.5 md:px-4 py-1.5 md:py-2 rounded-lg text-xs md:text-sm font-medium transition-all ${
                   settings.outputFormat === format.value
                     ? 'bg-primary text-primary-foreground'
                     : 'bg-accent text-accent-foreground hover:bg-accent/80'
@@ -106,35 +106,35 @@ export function SettingsPanel({
 
         {/* Max Compress Toggle */}
         <div className="space-y-2">
-          <Label className="text-sm font-medium text-muted-foreground">Compression Mode</Label>
+          <Label className="text-xs md:text-sm font-medium text-muted-foreground">Compression</Label>
           <div className="flex items-center gap-2">
             <Switch
               checked={settings.maxCompress}
               onCheckedChange={(checked) => onUpdateSettings({ maxCompress: checked })}
             />
-            <span className="text-sm text-muted-foreground">
-              Maximum Compression
+            <span className="text-xs md:text-sm text-muted-foreground">
+              Max Compress
             </span>
           </div>
           {settings.maxCompress && (
-            <div className="flex items-center gap-2 mt-2">
-              <span className="text-xs text-muted-foreground">Target:</span>
+            <div className="flex items-center gap-1 md:gap-2 mt-2">
+              <span className="text-[10px] md:text-xs text-muted-foreground">Target:</span>
               <Input
                 type="number"
                 min="10"
                 max="500"
                 value={settings.targetSize}
                 onChange={(e) => onUpdateSettings({ targetSize: parseInt(e.target.value) || 50 })}
-                className="w-20 h-8 text-sm"
+                className="w-14 md:w-20 h-7 md:h-8 text-xs md:text-sm"
               />
-              <span className="text-xs text-muted-foreground">KB</span>
+              <span className="text-[10px] md:text-xs text-muted-foreground">KB</span>
             </div>
           )}
         </div>
 
         {/* Quality Slider */}
         <div className="space-y-2">
-          <Label className="text-sm font-medium text-muted-foreground">
+          <Label className="text-xs md:text-sm font-medium text-muted-foreground">
             Quality: {settings.isLossless ? '100' : settings.quality}%
           </Label>
           <input
@@ -146,60 +146,60 @@ export function SettingsPanel({
             disabled={settings.isLossless || settings.maxCompress}
             className="w-full disabled:opacity-50"
           />
-          <p className="text-xs text-muted-foreground">
-            {settings.maxCompress ? 'Auto (Max Compress)' : settings.isLossless ? 'Lossless' : getQualityLabel(settings.quality)}
+          <p className="text-[10px] md:text-xs text-muted-foreground">
+            {settings.maxCompress ? 'Auto' : settings.isLossless ? 'Lossless' : getQualityLabel(settings.quality)}
           </p>
         </div>
 
         {/* Lossless Toggle */}
         <div className="space-y-2">
-          <Label className="text-sm font-medium text-muted-foreground">Lossless Mode</Label>
+          <Label className="text-xs md:text-sm font-medium text-muted-foreground">Lossless</Label>
           <div className="flex items-center gap-2">
             <Switch
               checked={settings.isLossless}
               onCheckedChange={(checked) => onUpdateSettings({ isLossless: checked, maxCompress: checked ? false : settings.maxCompress })}
             />
-            <span className="text-sm text-muted-foreground">
+            <span className="text-xs md:text-sm text-muted-foreground">
               {settings.isLossless ? 'On' : 'Off'}
             </span>
           </div>
-          <p className="text-xs text-muted-foreground">No quality loss, larger files</p>
+          <p className="text-[10px] md:text-xs text-muted-foreground">No quality loss</p>
         </div>
 
         {/* Auto Convert Toggle */}
         <div className="space-y-2">
-          <Label className="text-sm font-medium text-muted-foreground">Auto Convert</Label>
+          <Label className="text-xs md:text-sm font-medium text-muted-foreground">Auto Convert</Label>
           <div className="flex items-center gap-2">
             <Switch
               checked={settings.autoConvert}
               onCheckedChange={(checked) => onUpdateSettings({ autoConvert: checked })}
             />
-            <span className="text-sm text-muted-foreground">
-              Convert on upload
+            <span className="text-xs md:text-sm text-muted-foreground">
+              On upload
             </span>
           </div>
         </div>
 
         {/* Resize Options */}
-        <div className="space-y-2">
-          <Label className="text-sm font-medium text-muted-foreground">Custom Resize</Label>
-          <div className="flex items-center gap-2">
+        <div className="space-y-2 col-span-2 md:col-span-1">
+          <Label className="text-xs md:text-sm font-medium text-muted-foreground">Custom Resize</Label>
+          <div className="flex items-center gap-1.5 md:gap-2">
             <Input
               type="number"
-              placeholder="Width"
+              placeholder="W"
               min="1"
               value={settings.resizeWidth || ''}
               onChange={(e) => onUpdateSettings({ resizeWidth: e.target.value ? parseInt(e.target.value) : undefined })}
-              className="w-20"
+              className="w-16 md:w-20 text-xs md:text-sm"
             />
-            <span className="text-muted-foreground">×</span>
+            <span className="text-muted-foreground text-xs">×</span>
             <Input
               type="number"
-              placeholder="Height"
+              placeholder="H"
               min="1"
               value={settings.resizeHeight || ''}
               onChange={(e) => onUpdateSettings({ resizeHeight: e.target.value ? parseInt(e.target.value) : undefined })}
-              className="w-20"
+              className="w-16 md:w-20 text-xs md:text-sm"
             />
           </div>
           <div className="flex items-center gap-2 mt-2">
@@ -208,7 +208,7 @@ export function SettingsPanel({
               checked={settings.maintainAspectRatio}
               onCheckedChange={(checked) => onUpdateSettings({ maintainAspectRatio: checked as boolean })}
             />
-            <label htmlFor="aspectRatio" className="text-xs text-muted-foreground cursor-pointer">
+            <label htmlFor="aspectRatio" className="text-[10px] md:text-xs text-muted-foreground cursor-pointer">
               Maintain aspect ratio
             </label>
           </div>

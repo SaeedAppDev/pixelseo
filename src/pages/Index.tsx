@@ -96,7 +96,7 @@ const Index = () => {
       <ScrollProgressBar />
       <BackToTop />
       <LiveVisitorCounter />
-      <div className="max-w-6xl mx-auto px-4 py-6">
+      <div className="max-w-6xl mx-auto px-3 md:px-4 py-4 md:py-6 pb-24 md:pb-6">
         <Header />
         
         <HeroSection />

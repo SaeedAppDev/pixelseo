@@ -72,25 +72,25 @@ export function Footer() {
 
   return (
     <footer 
-      className="bg-card rounded-xl p-6 md:p-8 mt-6 shadow-card animate-fade-in"
+      className="bg-card rounded-xl p-4 md:p-8 mt-6 shadow-card animate-fade-in"
       itemScope 
       itemType="https://schema.org/WPFooter"
     >
       {/* Main Footer Content */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-8 mb-6">
         {/* Left Column - Brand & Contact */}
-        <div itemScope itemType="https://schema.org/Organization">
-          <Link to="/" className="flex items-center gap-3 group mb-4">
+        <div itemScope itemType="https://schema.org/Organization" className="text-center md:text-left">
+          <Link to="/" className="inline-flex items-center gap-3 group mb-4">
             <img 
               src={pixelSeoLogo} 
               alt="PixelSEO Logo" 
-              className="w-10 h-10 rounded-lg shadow-md group-hover:scale-105 transition-transform"
+              className="w-9 h-9 md:w-10 md:h-10 rounded-lg shadow-md group-hover:scale-105 transition-transform"
               itemProp="logo"
               width="40"
               height="40"
             />
-            <div>
-              <h3 className="font-bold text-lg text-foreground" itemProp="name">
+            <div className="text-left">
+              <h3 className="font-bold text-base md:text-lg text-foreground" itemProp="name">
                 Pixel<span className="text-primary">SEO</span>
               </h3>
               <p className="text-xs text-muted-foreground">AI Image Optimizer</p>
@@ -102,35 +102,35 @@ export function Footer() {
           <div className="space-y-2 text-sm text-muted-foreground">
             <a 
               href="mailto:pixelseo71@gmail.com" 
-              className="flex items-center gap-2 hover:text-primary transition-colors"
+              className="flex items-center justify-center md:justify-start gap-2 hover:text-primary transition-colors"
               itemProp="email"
             >
-              <Mail className="w-4 h-4" />
-              <span>pixelseo71@gmail.com</span>
+              <Mail className="w-4 h-4 shrink-0" />
+              <span className="text-xs md:text-sm">pixelseo71@gmail.com</span>
             </a>
             <a 
               href="tel:+18166178389" 
-              className="flex items-center gap-2 hover:text-primary transition-colors"
+              className="flex items-center justify-center md:justify-start gap-2 hover:text-primary transition-colors"
               itemProp="telephone"
             >
-              <Phone className="w-4 h-4" />
-              <span>+1 (816) 617-8389</span>
+              <Phone className="w-4 h-4 shrink-0" />
+              <span className="text-xs md:text-sm">+1 (816) 617-8389</span>
             </a>
-            <div className="flex items-center gap-2" itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
-              <MapPin className="w-4 h-4" />
-              <span itemProp="addressLocality">Digital Services Worldwide</span>
+            <div className="flex items-center justify-center md:justify-start gap-2" itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
+              <MapPin className="w-4 h-4 shrink-0" />
+              <span itemProp="addressLocality" className="text-xs md:text-sm">Digital Services Worldwide</span>
             </div>
           </div>
         </div>
 
         {/* Center Column - Navigation Links */}
         <nav className="md:col-span-1" aria-label="Footer navigation">
-          <div className="flex flex-wrap gap-x-6 gap-y-2">
+          <div className="flex flex-wrap justify-center md:justify-start gap-x-4 md:gap-x-6 gap-y-2">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 to={link.href}
-                className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                className="text-xs md:text-sm text-muted-foreground hover:text-primary transition-colors"
               >
                 {link.name}
               </Link>
@@ -139,16 +139,16 @@ export function Footer() {
         </nav>
 
         {/* Right Column - Social Links */}
-        <div className="flex flex-col items-start md:items-end">
+        <div className="flex flex-col items-center md:items-end">
           <p className="text-sm font-medium text-foreground mb-3">Follow Us</p>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap justify-center gap-2">
             {socialLinks.map((social) => (
               <a
                 key={social.label}
                 href={social.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-9 h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-colors"
+                className="w-8 h-8 md:w-9 md:h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-colors"
                 aria-label={`Follow PixelSEO on ${social.label}`}
                 title={social.label}
               >
@@ -163,7 +163,7 @@ export function Footer() {
       <div className="h-px bg-border mb-4" />
 
       {/* Bottom Bar - Copyright */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground">
+      <div className="flex flex-col items-center justify-center gap-2 text-xs text-muted-foreground text-center">
         <p>© {currentYear} PixelSEO. All rights reserved.</p>
         <p className="flex items-center gap-1">
           Made with <Heart className="w-3 h-3 text-red-500 fill-red-500" aria-label="love" /> for better web performance

@@ -38,14 +38,14 @@ export function UploadArea({ onFilesSelected }: UploadAreaProps) {
   };
 
   return (
-    <section className="bg-card rounded-xl p-4 md:p-6 mb-4 shadow-card animate-fade-in">
+    <section className="bg-card rounded-xl p-3 md:p-6 mb-3 md:mb-4 shadow-card animate-fade-in">
       <div
         onClick={handleClick}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         className={`
-          border-2 border-dashed rounded-xl p-8 md:p-12 text-center cursor-pointer
+          border-2 border-dashed rounded-lg md:rounded-xl p-6 md:p-12 text-center cursor-pointer
           transition-all duration-300
           ${isDragOver 
             ? 'border-success bg-success-bg' 
@@ -53,11 +53,11 @@ export function UploadArea({ onFilesSelected }: UploadAreaProps) {
           }
         `}
       >
-        <Upload className={`w-12 h-12 mx-auto mb-3 ${isDragOver ? 'text-success' : 'text-muted-foreground'}`} />
-        <p className="text-base font-medium text-foreground mb-1">
+        <Upload className={`w-10 h-10 md:w-12 md:h-12 mx-auto mb-2 md:mb-3 ${isDragOver ? 'text-success' : 'text-muted-foreground'}`} />
+        <p className="text-sm md:text-base font-medium text-foreground mb-1">
           Drag & drop images here
         </p>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-xs md:text-sm text-muted-foreground px-2">
           or click to select files (JPG, JPEG, PNG, WebP up to 50MB each)
         </p>
         <input
