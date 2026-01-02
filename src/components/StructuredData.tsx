@@ -50,13 +50,15 @@ export const StructuredData = () => {
           "email": "pixelseo71@gmail.com",
           "availableLanguage": ["English"]
         },
+        "telephone": "+1-816-617-8389",
         "sameAs": [
           "https://twitter.com/pixelseo",
           "https://facebook.com/pixelseo",
           "https://instagram.com/pixelseo",
           "https://linkedin.com/company/pixelseo",
           "https://youtube.com/@pixelseo",
-          "https://pinterest.com/pixelseo"
+          "https://pinterest.com/pixelseo",
+          "https://tiktok.com/@pixelseo"
         ]
       },
       {
