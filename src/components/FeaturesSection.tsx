@@ -53,8 +53,8 @@ const features = [
 
 export function FeaturesSection() {
   return (
-    <section className="py-12 px-6 bg-[#1a1a1a] rounded-2xl my-8">
-      <div className="text-center mb-10">
+    <section className="py-8">
+      <div className="text-center mb-8">
         <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
           Powerful Features
         </h2>
@@ -67,7 +67,7 @@ export function FeaturesSection() {
         {features.map((feature, index) => (
           <div 
             key={feature.title}
-            className="bg-[#252525] border border-[#333] rounded-xl p-5 hover:border-[#444] transition-all duration-300 animate-fade-in"
+            className="bg-card border border-border rounded-xl p-5 hover:border-border/60 transition-all duration-300 animate-fade-in"
             style={{ animationDelay: `${index * 50}ms` }}
           >
             <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${feature.color} flex items-center justify-center mb-4 shadow-lg`}>
