@@ -3,7 +3,7 @@ import { toast } from 'sonner';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { HeroSection } from '@/components/HeroSection';
-
+import { FeaturesSection } from '@/components/FeaturesSection';
 import { UploadArea } from '@/components/UploadArea';
 import { SettingsPanel } from '@/components/SettingsPanel';
 import { FileList } from '@/components/FileList';
@@ -136,6 +136,9 @@ const Index = () => {
           </section>
         </article>
         
+        <section aria-label="Features">
+          <FeaturesSection />
+        </section>
         
         <aside aria-label="Additional information">
           <InfoSection />
