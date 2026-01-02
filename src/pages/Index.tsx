@@ -95,26 +95,51 @@ const Index = () => {
       <LiveVisitorCounter />
       <div className="max-w-6xl mx-auto px-4 py-6">
         <Header />
-        <UploadArea onFilesSelected={handleFilesSelected} />
-        <SettingsPanel
-          settings={settings}
-          onUpdateSettings={updateSettings}
-          onResetSettings={resetSettings}
-          onReconvert={handleReconvert}
-          hasFiles={files.length > 0}
-        />
-        <FileList
-          files={files}
-          focusKeyword={settings.focusKeyword}
-          onUpdateSEO={updateSEOMetadata}
-          onDownload={downloadFile}
-          onRemove={removeFile}
-          onDownloadAll={handleDownloadAll}
-          onClearAll={handleClearAll}
-        />
-        <SummarySection files={files} />
-        <FeaturesSection />
-        <InfoSection />
+        
+        <article itemScope itemType="https://schema.org/WebApplication">
+          <meta itemProp="name" content="PixelSEO Image Optimizer" />
+          <meta itemProp="applicationCategory" content="MultimediaApplication" />
+          <meta itemProp="operatingSystem" content="Any" />
+          
+          <section aria-label="Upload area">
+            <UploadArea onFilesSelected={handleFilesSelected} />
+          </section>
+          
+          <section aria-label="Settings">
+            <SettingsPanel
+              settings={settings}
+              onUpdateSettings={updateSettings}
+              onResetSettings={resetSettings}
+              onReconvert={handleReconvert}
+              hasFiles={files.length > 0}
+            />
+          </section>
+          
+          <section aria-label="File list">
+            <FileList
+              files={files}
+              focusKeyword={settings.focusKeyword}
+              onUpdateSEO={updateSEOMetadata}
+              onDownload={downloadFile}
+              onRemove={removeFile}
+              onDownloadAll={handleDownloadAll}
+              onClearAll={handleClearAll}
+            />
+          </section>
+          
+          <section aria-label="Summary">
+            <SummarySection files={files} />
+          </section>
+        </article>
+        
+        <section aria-label="Features">
+          <FeaturesSection />
+        </section>
+        
+        <aside aria-label="Additional information">
+          <InfoSection />
+        </aside>
+        
         <div className="my-6">
           <SocialShareButtons title="PixelSEO - AI Image Optimizer for SEO" />
         </div>
