@@ -14,6 +14,7 @@ export function Footer() {
     { name: 'Terms', href: '/terms' },
     { name: 'Cookies', href: '/cookies' },
     { name: 'Disclaimer', href: '/disclaimer' },
+    { name: 'Sitemap', href: '/sitemap' },
   ];
 
   const socialLinks = [
