@@ -2,6 +2,7 @@ import JSZip from 'jszip';
 import { toast } from 'sonner';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
+import { HeroSection } from '@/components/HeroSection';
 import { FeaturesSection } from '@/components/FeaturesSection';
 import { UploadArea } from '@/components/UploadArea';
 import { SettingsPanel } from '@/components/SettingsPanel';
@@ -12,6 +13,7 @@ import { SocialShareButtons } from '@/components/SocialShareButtons';
 import { StructuredData } from '@/components/StructuredData';
 import { ScrollProgressBar } from '@/components/ScrollProgressBar';
 import { CanonicalUrl } from '@/components/CanonicalUrl';
+import { BackToTop } from '@/components/BackToTop';
 import LiveVisitorCounter from '@/components/LiveVisitorCounter';
 import { useImageConverter } from '@/hooks/useImageConverter';
 import { OUTPUT_FORMATS } from '@/lib/imageUtils';
@@ -92,10 +94,12 @@ const Index = () => {
       <StructuredData />
       <CanonicalUrl />
       <ScrollProgressBar />
+      <BackToTop />
       <LiveVisitorCounter />
       <div className="max-w-6xl mx-auto px-4 py-6">
         <Header />
         
+        <HeroSection />
         <article itemScope itemType="https://schema.org/WebApplication">
           <meta itemProp="name" content="PixelSEO Image Optimizer" />
           <meta itemProp="applicationCategory" content="MultimediaApplication" />
