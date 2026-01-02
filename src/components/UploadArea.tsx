@@ -38,14 +38,14 @@ export function UploadArea({ onFilesSelected }: UploadAreaProps) {
   };
 
   return (
-    <section className="bg-card rounded-xl p-6 md:p-10 mb-6 shadow-card animate-fade-in">
+    <section className="bg-card rounded-xl p-4 md:p-6 mb-4 shadow-card animate-fade-in">
       <div
         onClick={handleClick}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         className={`
-          border-2 border-dashed rounded-xl p-10 md:p-16 text-center cursor-pointer
+          border-2 border-dashed rounded-xl p-8 md:p-12 text-center cursor-pointer
           transition-all duration-300
           ${isDragOver 
             ? 'border-success bg-success-bg' 
@@ -53,8 +53,8 @@ export function UploadArea({ onFilesSelected }: UploadAreaProps) {
           }
         `}
       >
-        <Upload className={`w-16 h-16 mx-auto mb-4 ${isDragOver ? 'text-success' : 'text-muted-foreground'}`} />
-        <p className="text-lg font-medium text-foreground mb-2">
+        <Upload className={`w-12 h-12 mx-auto mb-3 ${isDragOver ? 'text-success' : 'text-muted-foreground'}`} />
+        <p className="text-base font-medium text-foreground mb-1">
           Drag & drop images here
         </p>
         <p className="text-sm text-muted-foreground">
