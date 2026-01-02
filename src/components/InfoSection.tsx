@@ -44,6 +44,58 @@ export function InfoSection() {
   return (
     <>
       <section className="bg-card rounded-xl p-6 md:p-8 mb-6 shadow-card animate-fade-in">
+        <h2 className="text-xl md:text-2xl font-bold text-foreground mb-6">All Features at a Glance</h2>
+        <div className="grid md:grid-cols-2 gap-4">
+          <div className="space-y-3">
+            <div className="flex items-start gap-3">
+              <CheckCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+              <div>
+                <h3 className="font-medium text-foreground">AI-Powered SEO Filenames</h3>
+                <p className="text-sm text-muted-foreground">Automatically generate search-optimized filenames</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <CheckCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+              <div>
+                <h3 className="font-medium text-foreground">WebP Conversion</h3>
+                <p className="text-sm text-muted-foreground">Up to 80% smaller file sizes</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <CheckCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+              <div>
+                <h3 className="font-medium text-foreground">OCR Text Detection</h3>
+                <p className="text-sm text-muted-foreground">Extract text from images for better SEO</p>
+              </div>
+            </div>
+          </div>
+          <div className="space-y-3">
+            <div className="flex items-start gap-3">
+              <CheckCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+              <div>
+                <h3 className="font-medium text-foreground">100% Browser-Based</h3>
+                <p className="text-sm text-muted-foreground">No uploads - complete privacy</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <CheckCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+              <div>
+                <h3 className="font-medium text-foreground">Batch Processing</h3>
+                <p className="text-sm text-muted-foreground">Process unlimited images at once</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <CheckCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+              <div>
+                <h3 className="font-medium text-foreground">Completely Free</h3>
+                <p className="text-sm text-muted-foreground">No registration or payment required</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-card rounded-xl p-6 md:p-8 mb-6 shadow-card animate-fade-in">
         <h2 className="text-xl md:text-2xl font-bold text-foreground mb-4">Why Choose <strong>PixelSEO</strong> for WebP Conversion?</h2>
         <p className="text-muted-foreground mb-6">
           <strong>PixelSEO</strong> uses the modern WebP format that provides superior compression compared to JPEG and PNG. 
