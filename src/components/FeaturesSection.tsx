@@ -65,12 +65,49 @@ export function FeaturesSection() {
     <section id="features" className="bg-card rounded-xl p-6 md:p-8 mb-6 shadow-card overflow-hidden">
       <div className="text-center mb-8">
         <h2 className="text-2xl md:text-3xl font-bold text-foreground animate-fade-in-up">
-          Powerful Features
+          Powerful <strong>PixelSEO</strong> Features
         </h2>
         <p className="text-muted-foreground mt-2 animate-fade-in-up stagger-1">
           Everything you need to optimize images for the web
         </p>
       </div>
+
+      {/* Features Comparison Table */}
+      <div className="overflow-x-auto mb-8">
+        <table className="w-full text-left text-sm border-collapse">
+          <thead>
+            <tr className="border-b border-border">
+              <th className="p-3 text-foreground font-semibold">Feature</th>
+              <th className="p-3 text-foreground font-semibold">PixelSEO</th>
+              <th className="p-3 text-foreground font-semibold">Others</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="border-b border-border/50">
+              <td className="p-3 text-muted-foreground">AI SEO Filenames</td>
+              <td className="p-3 text-success">✓ Free</td>
+              <td className="p-3 text-destructive">✗ Paid</td>
+            </tr>
+            <tr className="border-b border-border/50">
+              <td className="p-3 text-muted-foreground">OCR Text Detection</td>
+              <td className="p-3 text-success">✓ Included</td>
+              <td className="p-3 text-destructive">✗ Limited</td>
+            </tr>
+            <tr className="border-b border-border/50">
+              <td className="p-3 text-muted-foreground">WebP Conversion</td>
+              <td className="p-3 text-success">✓ 80% smaller</td>
+              <td className="p-3 text-muted-foreground">Varies</td>
+            </tr>
+            <tr className="border-b border-border/50">
+              <td className="p-3 text-muted-foreground">Privacy</td>
+              <td className="p-3 text-success">✓ 100% Local</td>
+              <td className="p-3 text-destructive">Cloud Upload</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 className="text-xl font-bold text-foreground mb-4 text-center">All Features at a Glance</h3>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {features.map((feature, index) => (
@@ -100,6 +137,29 @@ export function FeaturesSection() {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* External Resource Links */}
+      <div className="mt-8 text-center">
+        <p className="text-muted-foreground text-sm mb-2">Learn more about image optimization:</p>
+        <div className="flex flex-wrap justify-center gap-4">
+          <a 
+            href="https://developers.google.com/speed/webp" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:underline text-sm"
+          >
+            Google WebP Documentation →
+          </a>
+          <a 
+            href="https://web.dev/articles/image-optimization" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:underline text-sm"
+          >
+            Web.dev Image Optimization Guide →
+          </a>
+        </div>
       </div>
     </section>
   );
