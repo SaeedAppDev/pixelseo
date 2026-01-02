@@ -18,6 +18,115 @@
     <meta name="twitter:image" content="https://www.pixelseo.net/og-image.png" />
     <link rel="canonical" href="https://www.pixelseo.net" />
     <link rel="icon" href="/favicon.png" type="image/png" />
+
+    <!-- Core Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://www.pixelseo.net/#website",
+      "url": "https://www.pixelseo.net",
+      "name": "PixelSEO",
+      "description": "AI-powered image optimization tool with smart SEO filenames, OCR text detection, and WebP conversion.",
+      "publisher": {"@id": "https://www.pixelseo.net/#organization"},
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.pixelseo.net/?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      },
+      "inLanguage": "en-US"
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://www.pixelseo.net/#organization",
+      "name": "PixelSEO",
+      "url": "https://www.pixelseo.net",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.pixelseo.net/favicon.png",
+        "width": 512,
+        "height": 512
+      },
+      "email": "pixelseo71@gmail.com",
+      "telephone": "+1-816-617-8389",
+      "sameAs": [
+        "https://twitter.com/pixelseo",
+        "https://facebook.com/pixelseo",
+        "https://instagram.com/pixelseo",
+        "https://linkedin.com/company/pixelseo",
+        "https://youtube.com/@pixelseo",
+        "https://pinterest.com/pixelseo",
+        "https://tiktok.com/@pixelseo"
+      ]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SiteNavigationElement",
+      "@id": "https://www.pixelseo.net/#navigation",
+      "name": "Main Navigation",
+      "hasPart": [
+        {"@type": "SiteNavigationElement", "name": "Home", "url": "https://www.pixelseo.net"},
+        {"@type": "SiteNavigationElement", "name": "Features", "url": "https://www.pixelseo.net/features"},
+        {"@type": "SiteNavigationElement", "name": "About", "url": "https://www.pixelseo.net/about"},
+        {"@type": "SiteNavigationElement", "name": "FAQ", "url": "https://www.pixelseo.net/faq"},
+        {"@type": "SiteNavigationElement", "name": "Contact", "url": "https://www.pixelseo.net/contact"},
+        {"@type": "SiteNavigationElement", "name": "Privacy Policy", "url": "https://www.pixelseo.net/privacy"},
+        {"@type": "SiteNavigationElement", "name": "Terms of Service", "url": "https://www.pixelseo.net/terms"}
+      ]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "@id": "https://www.pixelseo.net/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is PixelSEO?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "PixelSEO is a free AI-powered image optimization tool that automatically generates SEO-friendly filenames, extracts text from images using OCR, and converts images to modern formats like WebP for better web performance."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is PixelSEO free to use?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, PixelSEO is completely free to use. No registration or account is required. Simply upload your images and start optimizing."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What image formats does PixelSEO support?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "PixelSEO supports JPEG, PNG, GIF, BMP, and TIFF input formats. You can convert to WebP, PNG, or JPEG output formats."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does AI filename generation work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "PixelSEO uses advanced AI to analyze your image content and automatically generate descriptive, SEO-friendly filenames that help improve your image search rankings."
+          }
+        }
+      ]
+    }
+    </script>
   </head>
 
   <body>
