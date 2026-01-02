@@ -53,28 +53,28 @@ const features = [
 
 export function FeaturesSection() {
   return (
-    <section className="py-8">
-      <div className="text-center mb-8">
-        <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
+    <section className="py-6 md:py-8">
+      <div className="text-center mb-6 md:mb-8">
+        <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground mb-2 md:mb-3">
           Powerful Features
         </h2>
-        <p className="text-muted-foreground">
+        <p className="text-sm md:text-base text-muted-foreground px-4">
           Everything you need to optimize images for the web
         </p>
       </div>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
         {features.map((feature, index) => (
           <div 
             key={feature.title}
-            className="group bg-card border border-border rounded-xl p-5 hover:border-primary/40 hover:-translate-y-2 hover:shadow-xl hover:shadow-primary/10 transition-all duration-300 ease-out animate-fade-in cursor-pointer"
+            className="group bg-card border border-border rounded-lg md:rounded-xl p-3 md:p-5 hover:border-primary/40 md:hover:-translate-y-2 hover:shadow-xl hover:shadow-primary/10 transition-all duration-300 ease-out animate-fade-in cursor-pointer"
             style={{ animationDelay: `${index * 80}ms` }}
           >
-            <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${feature.color} flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-xl transition-all duration-300`}>
-              <feature.icon className="w-6 h-6 text-white group-hover:animate-pulse" />
+            <div className={`w-9 h-9 md:w-12 md:h-12 rounded-lg md:rounded-xl bg-gradient-to-br ${feature.color} flex items-center justify-center mb-2 md:mb-4 shadow-lg group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-xl transition-all duration-300`}>
+              <feature.icon className="w-4 h-4 md:w-6 md:h-6 text-white group-hover:animate-pulse" />
             </div>
-            <h3 className="text-base font-semibold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">{feature.title}</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">{feature.description}</p>
+            <h3 className="text-xs md:text-base font-semibold text-foreground mb-1 md:mb-2 group-hover:text-primary transition-colors duration-300 leading-tight">{feature.title}</h3>
+            <p className="text-[10px] md:text-sm text-muted-foreground leading-relaxed line-clamp-3 md:line-clamp-none">{feature.description}</p>
           </div>
         ))}
       </div>

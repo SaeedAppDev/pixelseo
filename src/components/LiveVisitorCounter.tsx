@@ -46,23 +46,23 @@ const LiveVisitorCounter = () => {
   }, []);
 
   return (
-    <div className="fixed bottom-4 left-1/2 -translate-x-1/2 md:left-4 md:translate-x-0 z-50">
-      <div className="flex items-center gap-2 bg-background/80 backdrop-blur-sm border border-border rounded-full px-3 py-1.5 md:px-4 md:py-2 shadow-lg">
+    <div className="fixed bottom-20 md:bottom-4 left-1/2 -translate-x-1/2 md:left-4 md:translate-x-0 z-40">
+      <div className="flex items-center gap-1.5 md:gap-2 bg-background/90 backdrop-blur-sm border border-border rounded-full px-2.5 py-1 md:px-4 md:py-2 shadow-lg">
         <div className="relative flex items-center">
-          <span className="absolute inline-flex h-3 w-3 rounded-full bg-green-500 opacity-75 animate-ping" />
-          <span className="relative inline-flex h-3 w-3 rounded-full bg-green-500" />
+          <span className="absolute inline-flex h-2 w-2 md:h-3 md:w-3 rounded-full bg-green-500 opacity-75 animate-ping" />
+          <span className="relative inline-flex h-2 w-2 md:h-3 md:w-3 rounded-full bg-green-500" />
         </div>
-        <Users className="h-4 w-4 text-muted-foreground" />
-        <span className="text-sm font-medium text-foreground">
+        <Users className="h-3 w-3 md:h-4 md:w-4 text-muted-foreground" />
+        <span className="text-xs md:text-sm font-medium text-foreground">
           {isConnected ? (
             <>
               <span className="text-primary font-bold">{visitorCount}</span>
               <span className="text-muted-foreground ml-1">
-                {visitorCount === 1 ? 'visitor' : 'visitors'} online
+                <span className="hidden sm:inline">{visitorCount === 1 ? 'visitor' : 'visitors'} </span>online
               </span>
             </>
           ) : (
-            <span className="text-muted-foreground">Connecting...</span>
+            <span className="text-muted-foreground">...</span>
           )}
         </span>
       </div>

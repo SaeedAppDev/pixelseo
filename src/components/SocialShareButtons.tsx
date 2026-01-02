@@ -48,28 +48,28 @@ export function SocialShareButtons({ title, url }: SocialShareButtonsProps) {
   };
 
   return (
-    <div className="flex items-center justify-center gap-2 flex-wrap">
-      <span className="text-sm text-muted-foreground mr-1">Share:</span>
+    <div className="flex items-center justify-center gap-1.5 md:gap-2 flex-wrap px-2">
+      <span className="text-xs md:text-sm text-muted-foreground mr-1">Share:</span>
       {shareLinks.map((link) => (
         <Button
           key={link.name}
           variant="outline"
           size="icon"
-          className="h-8 w-8 hover:bg-primary/10 hover:text-primary hover:border-primary/30"
+          className="h-7 w-7 md:h-8 md:w-8 hover:bg-primary/10 hover:text-primary hover:border-primary/30"
           onClick={() => window.open(link.url, '_blank', 'width=600,height=400')}
           aria-label={`Share on ${link.name}`}
         >
-          <link.icon className="w-4 h-4" />
+          <link.icon className="w-3.5 h-3.5 md:w-4 md:h-4" />
         </Button>
       ))}
       <Button
         variant="outline"
         size="icon"
-        className="h-8 w-8 hover:bg-primary/10 hover:text-primary hover:border-primary/30"
+        className="h-7 w-7 md:h-8 md:w-8 hover:bg-primary/10 hover:text-primary hover:border-primary/30"
         onClick={copyToClipboard}
         aria-label="Copy link"
       >
-        <Link2 className="w-4 h-4" />
+        <Link2 className="w-3.5 h-3.5 md:w-4 md:h-4" />
       </Button>
     </div>
   );

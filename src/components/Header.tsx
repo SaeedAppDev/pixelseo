@@ -20,7 +20,7 @@ export function Header() {
 
   return (
     <header 
-      className="bg-card/80 backdrop-blur-lg rounded-2xl p-4 md:p-5 mb-6 shadow-lg border border-border/50 animate-fade-in sticky top-4 z-50"
+      className="bg-card/80 backdrop-blur-lg rounded-xl md:rounded-2xl p-3 md:p-5 mb-4 md:mb-6 shadow-lg border border-border/50 animate-fade-in sticky top-2 md:top-4 z-50"
       itemScope 
       itemType="https://schema.org/WPHeader"
     >
@@ -34,11 +34,11 @@ export function Header() {
           itemProp="publisher"
         >
           <div className="relative">
-            <div className="absolute inset-0 bg-primary/20 rounded-xl blur-lg group-hover:bg-primary/30 transition-colors" />
+            <div className="absolute inset-0 bg-primary/20 rounded-lg md:rounded-xl blur-lg group-hover:bg-primary/30 transition-colors" />
             <img 
               src={pixelSeoLogo} 
               alt="PixelSEO Logo - AI Image Optimizer" 
-              className="relative w-10 h-10 md:w-12 md:h-12 rounded-xl shadow-lg group-hover:scale-105 transition-transform"
+              className="relative w-8 h-8 md:w-12 md:h-12 rounded-lg md:rounded-xl shadow-lg group-hover:scale-105 transition-transform"
               itemProp="logo"
               width="48"
               height="48"
@@ -46,12 +46,12 @@ export function Header() {
           </div>
           <div>
             <span 
-              className="text-xl md:text-2xl font-bold text-foreground tracking-tight"
+              className="text-lg md:text-2xl font-bold text-foreground tracking-tight"
               itemProp="name"
             >
               Pixel<span className="text-primary">SEO</span>
             </span>
-            <p className="text-xs text-muted-foreground hidden sm:block">
+            <p className="text-[10px] md:text-xs text-muted-foreground hidden sm:block">
               AI Image Optimizer
             </p>
             <meta itemProp="url" content="https://www.pixelseo.net" />
