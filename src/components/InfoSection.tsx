@@ -44,25 +44,27 @@ export function InfoSection() {
   return (
     <>
       <section className="bg-card rounded-xl p-6 md:p-8 mb-6 shadow-card animate-fade-in">
-        <h2 className="text-xl md:text-2xl font-bold text-foreground mb-4">Why WebP?</h2>
+        <h2 className="text-xl md:text-2xl font-bold text-foreground mb-4">Why Choose <strong>PixelSEO</strong> for WebP Conversion?</h2>
         <p className="text-muted-foreground mb-6">
-          WebP is a modern image format that provides superior compression compared to JPEG and PNG. 
+          <strong>PixelSEO</strong> uses the modern WebP format that provides superior compression compared to JPEG and PNG. 
           It can reduce file sizes by 25-35% while maintaining the same visual quality, resulting in 
           faster page loads and better user experience.
         </p>
-        <h3 className="text-lg font-semibold text-foreground mb-4">Key Features</h3>
-        <ul className="space-y-3">
+        <h3 className="text-lg font-semibold text-foreground mb-4">Key Benefits of Using PixelSEO</h3>
+        <ol className="space-y-3 list-decimal list-inside">
           {features.map((feature, index) => (
-            <li key={index} className="flex items-start gap-3 text-muted-foreground">
-              <CheckCircle className="w-5 h-5 text-success shrink-0 mt-0.5" />
-              <span>{feature}</span>
+            <li key={index} className="text-muted-foreground">
+              <span className="inline-flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-success shrink-0 inline" />
+                <span>{feature}</span>
+              </span>
             </li>
           ))}
-        </ul>
+        </ol>
       </section>
 
       <section className="bg-card rounded-xl p-6 md:p-8 mb-6 shadow-card animate-fade-in">
-        <h2 className="text-xl md:text-2xl font-bold text-foreground mb-6">Frequently Asked Questions</h2>
+        <h2 className="text-xl md:text-2xl font-bold text-foreground mb-6"><strong>PixelSEO</strong> Frequently Asked Questions</h2>
         <div className="space-y-3">
           {faqs.map((faq, index) => (
             <div

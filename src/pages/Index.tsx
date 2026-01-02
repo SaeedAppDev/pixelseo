@@ -15,6 +15,7 @@ import { ScrollProgressBar } from '@/components/ScrollProgressBar';
 import { CanonicalUrl } from '@/components/CanonicalUrl';
 import { BackToTop } from '@/components/BackToTop';
 import LiveVisitorCounter from '@/components/LiveVisitorCounter';
+import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { useImageConverter } from '@/hooks/useImageConverter';
 import { OUTPUT_FORMATS } from '@/lib/imageUtils';
 
@@ -98,6 +99,7 @@ const Index = () => {
       <LiveVisitorCounter />
       <div className="max-w-6xl mx-auto px-4 py-6">
         <Header />
+        <Breadcrumbs />
         
         <HeroSection />
         <article itemScope itemType="https://schema.org/WebApplication">
