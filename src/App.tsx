@@ -7,6 +7,7 @@ import { HelmetProvider } from "react-helmet-async";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import Index from "./pages/Index";
 import Features from "./pages/Features";
+import About from "./pages/About";
 import FAQ from "./pages/FAQ";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
@@ -28,6 +29,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/features" element={<Features />} />
+            <Route path="/about" element={<About />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />

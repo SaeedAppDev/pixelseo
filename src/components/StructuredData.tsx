@@ -14,7 +14,16 @@ export const StructuredData = () => {
         "description": "AI-powered image optimization tool with smart SEO filenames, OCR text detection, and WebP conversion.",
         "publisher": {
           "@id": `${BASE_URL}/#organization`
-        }
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": `${BASE_URL}/?q={search_term_string}`
+          },
+          "query-input": "required name=search_term_string"
+        },
+        "inLanguage": "en-US"
       },
       {
         "@type": "Organization",
@@ -23,11 +32,73 @@ export const StructuredData = () => {
         "url": BASE_URL,
         "logo": {
           "@type": "ImageObject",
-          "url": `${BASE_URL}/og-image.png`
+          "@id": `${BASE_URL}/#logo`,
+          "url": `${BASE_URL}/favicon.png`,
+          "contentUrl": `${BASE_URL}/favicon.png`,
+          "width": 512,
+          "height": 512,
+          "caption": "PixelSEO Logo"
+        },
+        "image": {
+          "@id": `${BASE_URL}/#logo`
+        },
+        "description": "PixelSEO provides free AI-powered image optimization with automatic SEO filenames, OCR text extraction, and modern format conversion.",
+        "email": "pixelseo71@gmail.com",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "customer support",
+          "email": "pixelseo71@gmail.com",
+          "availableLanguage": ["English"]
         },
         "sameAs": [
-          "https://twitter.com/PixelSEO",
-          "https://github.com/PixelSEO"
+          "https://twitter.com/pixelseo",
+          "https://facebook.com/pixelseo",
+          "https://instagram.com/pixelseo",
+          "https://linkedin.com/company/pixelseo",
+          "https://youtube.com/@pixelseo",
+          "https://pinterest.com/pixelseo"
+        ]
+      },
+      {
+        "@type": "SiteNavigationElement",
+        "@id": `${BASE_URL}/#navigation`,
+        "name": "Main Navigation",
+        "hasPart": [
+          {
+            "@type": "SiteNavigationElement",
+            "name": "Home",
+            "url": BASE_URL
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "name": "Features",
+            "url": `${BASE_URL}/features`
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "name": "About",
+            "url": `${BASE_URL}/about`
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "name": "FAQ",
+            "url": `${BASE_URL}/faq`
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "name": "Contact",
+            "url": `${BASE_URL}/contact`
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "name": "Privacy Policy",
+            "url": `${BASE_URL}/privacy`
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "name": "Terms of Service",
+            "url": `${BASE_URL}/terms`
+          }
         ]
       },
       {
