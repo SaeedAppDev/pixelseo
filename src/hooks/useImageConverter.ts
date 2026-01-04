@@ -153,9 +153,12 @@ export function useImageConverter() {
         body: { imageBase64, focusKeyword }
       });
 
-      if (error) {
-        console.error('AI analysis error:', error);
-        toast.error('AI analysis failed. Using fallback SEO generation.');
+      if (error || data?.error) {
+        console.error('AI analysis error:', error || data?.error);
+        const errorMessage = data?.code === 'CREDITS_EXHAUSTED' 
+          ? 'AI credits exhausted. Using basic SEO generation.'
+          : 'AI analysis failed. Using fallback SEO generation.';
+        toast.error(errorMessage);
         return null;
       }
 

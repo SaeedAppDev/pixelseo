@@ -167,7 +167,7 @@ RESPOND IN EXACTLY THIS JSON FORMAT (no markdown, no explanation):
       }
       if (response.status === 402) {
         return new Response(
-          JSON.stringify({ error: 'AI service temporarily unavailable.' }),
+          JSON.stringify({ error: 'AI credits exhausted. Please add credits to enable AI analysis.', code: 'CREDITS_EXHAUSTED' }),
           { status: 402, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );
       }
