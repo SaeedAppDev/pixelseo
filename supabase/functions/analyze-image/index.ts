@@ -1,3 +1,4 @@
+import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 const corsHeaders = {
@@ -7,9 +8,6 @@ const corsHeaders = {
 
 // Maximum image size: 5MB (in bytes)
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
-
-// Allowed image formats
-const ALLOWED_FORMATS = ['jpeg', 'jpg', 'png', 'gif', 'webp'];
 
 // Validate and sanitize input
 function validateImageBase64(imageBase64: unknown): { valid: boolean; error?: string; sanitized?: string } {
@@ -84,11 +82,11 @@ serve(async (req) => {
     // Sanitize focus keyword
     const sanitizedKeyword = sanitizeFocusKeyword(focusKeyword);
 
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (!LOVABLE_API_KEY) {
-      console.error('LOVABLE_API_KEY is not configured');
+    const OPENAI_API_KEY = Deno.env.get('OPENAI_API_KEY');
+    if (!OPENAI_API_KEY) {
+      console.error('OPENAI_API_KEY is not configured');
       return new Response(
-        JSON.stringify({ error: 'AI service is not available' }),
+        JSON.stringify({ error: 'AI service is not available. Please configure OpenAI API key.' }),
         { status: 503, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
@@ -125,16 +123,16 @@ RESPOND IN EXACTLY THIS JSON FORMAT (no markdown, no explanation):
       ? `Analyze this image with focus keyword: "${sanitizedKeyword}"` 
       : `Analyze this image and generate SEO metadata`;
 
-    console.log('Calling Lovable AI for image analysis...');
+    console.log('Calling OpenAI for image analysis...');
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+        'Authorization': `Bearer ${OPENAI_API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
+        model: 'gpt-4o-mini',
         messages: [
           { role: 'system', content: systemPrompt },
           {
@@ -144,20 +142,20 @@ RESPOND IN EXACTLY THIS JSON FORMAT (no markdown, no explanation):
               {
                 type: 'image_url',
                 image_url: {
-                  url: imageValidation.sanitized!.startsWith('data:') 
-                    ? imageValidation.sanitized! 
-                    : `data:image/jpeg;base64,${imageValidation.sanitized}`
+                  url: imageValidation.sanitized!,
+                  detail: 'low'
                 }
               }
             ]
           }
         ],
+        max_tokens: 500,
       }),
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('AI Gateway error:', response.status, errorText);
+      console.error('OpenAI API error:', response.status, errorText);
       
       if (response.status === 429) {
         return new Response(
@@ -165,10 +163,10 @@ RESPOND IN EXACTLY THIS JSON FORMAT (no markdown, no explanation):
           { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );
       }
-      if (response.status === 402) {
+      if (response.status === 401) {
         return new Response(
-          JSON.stringify({ error: 'AI credits exhausted. Please add credits to enable AI analysis.', code: 'CREDITS_EXHAUSTED' }),
-          { status: 402, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          JSON.stringify({ error: 'Invalid OpenAI API key. Please check your configuration.' }),
+          { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );
       }
       
@@ -182,14 +180,14 @@ RESPOND IN EXACTLY THIS JSON FORMAT (no markdown, no explanation):
     const content = data.choices?.[0]?.message?.content;
 
     if (!content) {
-      console.error('No content in AI response');
+      console.error('No content in OpenAI response');
       return new Response(
         JSON.stringify({ error: 'Image analysis failed. Please try again.' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    console.log('AI response received successfully');
+    console.log('OpenAI response received successfully');
 
     // Parse the JSON response
     let analysisResult;
@@ -202,7 +200,7 @@ RESPOND IN EXACTLY THIS JSON FORMAT (no markdown, no explanation):
         throw new Error('No valid JSON found in response');
       }
     } catch (parseError) {
-      console.error('Failed to parse AI response:', parseError);
+      console.error('Failed to parse OpenAI response:', parseError, 'Content:', content);
       // Return a fallback response
       analysisResult = {
         detectedType: 'image',
