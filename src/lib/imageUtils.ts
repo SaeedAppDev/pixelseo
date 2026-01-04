@@ -146,44 +146,51 @@ export interface ConversionResult {
   hasTransparency: boolean;
 }
 
-// Aggressive compression to target under 50KB when possible
+// Smart compression to target under 50KB while maintaining quality
 function calculateOptimalQuality(
   originalSize: number,
   targetSize: number = 50 * 1024
 ): number {
-  // Estimate compression ratio needed
+  // Keep quality higher to maintain visual quality
   const ratio = targetSize / originalSize;
   
-  if (ratio >= 1) return 85; // Already small enough
-  if (ratio >= 0.5) return 75;
-  if (ratio >= 0.3) return 65;
-  if (ratio >= 0.2) return 55;
-  if (ratio >= 0.1) return 45;
-  return 35; // Very aggressive for large files
+  if (ratio >= 1) return 90; // Already small enough
+  if (ratio >= 0.5) return 85;
+  if (ratio >= 0.3) return 80;
+  if (ratio >= 0.2) return 75;
+  if (ratio >= 0.1) return 70;
+  return 65; // Minimum quality to maintain visual appearance
 }
 
 // Calculate optimal resize dimensions for target size
+// Prioritize dimension reduction over quality loss
 function calculateOptimalDimensions(
   width: number,
   height: number,
   originalSize: number,
   targetSize: number = 50 * 1024
 ): { width: number; height: number } {
-  // Estimate pixels per byte ratio (rough approximation)
-  const currentPixels = width * height;
-  const bytesPerPixel = originalSize / currentPixels;
-  
-  // Target pixels based on desired file size
-  const targetPixels = targetSize / bytesPerPixel;
-  
-  if (targetPixels >= currentPixels) {
+  // Don't resize if already small
+  if (originalSize <= targetSize) {
     return { width, height };
   }
   
-  // Calculate scale factor
-  const scale = Math.sqrt(targetPixels / currentPixels);
-  const minScale = 0.25; // Don't go below 25% of original size
+  // Calculate how much we need to reduce
+  const currentPixels = width * height;
+  const reductionRatio = targetSize / originalSize;
+  
+  // Apply a more conservative scale - reduce dimensions instead of quality
+  // sqrt because pixels = width * height
+  const scale = Math.sqrt(reductionRatio * 1.5); // 1.5 factor to be less aggressive
+  
+  // Don't go below 50% of original dimensions (quality preservation)
+  const minScale = 0.5;
   const finalScale = Math.max(scale, minScale);
+  
+  // Don't upscale
+  if (finalScale >= 1) {
+    return { width, height };
+  }
   
   return {
     width: Math.round(width * finalScale),
