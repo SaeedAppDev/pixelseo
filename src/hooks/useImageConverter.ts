@@ -67,14 +67,23 @@ export function useImageConverter() {
   const [files, setFiles] = useState<ImageFile[]>([]);
   const [settings, setSettings] = useState<ConversionSettings>(() => {
     const saved = localStorage.getItem('imageConverterSettings');
+    const savedApiKey = localStorage.getItem('pixelseo_openai_key');
+    let initialSettings = defaultSettings;
+    
     if (saved) {
       try {
-        return { ...defaultSettings, ...JSON.parse(saved) };
+        initialSettings = { ...defaultSettings, ...JSON.parse(saved) };
       } catch {
-        return defaultSettings;
+        initialSettings = defaultSettings;
       }
     }
-    return defaultSettings;
+    
+    // Load saved API key if available
+    if (savedApiKey) {
+      initialSettings.openaiApiKey = savedApiKey;
+    }
+    
+    return initialSettings;
   });
 
   const updateSettings = useCallback((newSettings: Partial<ConversionSettings>) => {

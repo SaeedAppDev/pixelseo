@@ -288,13 +288,16 @@ export function convertImage(
         }
         
         // Calculate quality based on compression mode
+        // Use maximum quality (1.0) by default to preserve image quality
         let conversionQuality: number;
         if (isLossless) {
           conversionQuality = 1.0;
         } else if (maxCompress) {
           conversionQuality = calculateOptimalQuality(file.size, targetSize) / 100;
         } else {
-          conversionQuality = quality / 100;
+          // Use user's quality setting but ensure it's always high enough
+          // Minimum 0.92 to prevent visible quality loss
+          conversionQuality = Math.max(quality / 100, 0.92);
         }
         
         const formatInfo = OUTPUT_FORMATS.find(f => f.value === format);
