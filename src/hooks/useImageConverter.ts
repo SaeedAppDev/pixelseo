@@ -45,6 +45,7 @@ export interface ConversionSettings {
   enableAIAnalysis: boolean;
   targetSize: number;
   focusKeyword: string;
+  openaiApiKey: string;
 }
 
 const defaultSettings: ConversionSettings = {
@@ -59,6 +60,7 @@ const defaultSettings: ConversionSettings = {
   targetSize: 50,
   focusKeyword: '',
   enableAIAnalysis: true,
+  openaiApiKey: '',
 };
 
 export function useImageConverter() {
@@ -136,7 +138,7 @@ export function useImageConverter() {
     }
   }, [settings]);
 
-  const analyzeImageWithAI = useCallback(async (id: string, imageBase64: string, focusKeyword: string): Promise<{
+  const analyzeImageWithAI = useCallback(async (id: string, imageBase64: string, focusKeyword: string, openaiApiKey?: string): Promise<{
     filename: string;
     altText: string;
     titleText: string;
@@ -150,13 +152,15 @@ export function useImageConverter() {
       ));
 
       const { data, error } = await supabase.functions.invoke('analyze-image', {
-        body: { imageBase64, focusKeyword }
+        body: { imageBase64, focusKeyword, openaiApiKey }
       });
 
       if (error || data?.error) {
         console.error('AI analysis error:', error || data?.error);
         const errorMessage = data?.code === 'CREDITS_EXHAUSTED' 
-          ? 'AI credits exhausted. Using basic SEO generation.'
+          ? 'AI credits exhausted. Add your OpenAI API key in settings.'
+          : data?.code === 'INVALID_API_KEY'
+          ? 'Invalid OpenAI API key. Please check your key.'
           : 'AI analysis failed. Using fallback SEO generation.';
         toast.error(errorMessage);
         return null;
@@ -228,7 +232,7 @@ export function useImageConverter() {
       // Try AI analysis if enabled
       let seoMetadata;
       if (currentSettings.enableAIAnalysis) {
-        const aiResult = await analyzeImageWithAI(id, file.preview, currentSettings.focusKeyword);
+        const aiResult = await analyzeImageWithAI(id, file.preview, currentSettings.focusKeyword, currentSettings.openaiApiKey);
         if (aiResult) {
           seoMetadata = {
             imageType: aiResult.imageType,

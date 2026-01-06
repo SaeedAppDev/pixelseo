@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Input } from '@/components/ui/input';
@@ -5,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ConversionSettings } from '@/hooks/useImageConverter';
 import { OUTPUT_FORMATS } from '@/lib/imageUtils';
-import { Search, Sparkles } from 'lucide-react';
+import { Search, Sparkles, Key, Eye, EyeOff } from 'lucide-react';
 
 interface SettingsPanelProps {
   settings: ConversionSettings;
@@ -22,6 +23,8 @@ export function SettingsPanel({
   onReconvert,
   hasFiles 
 }: SettingsPanelProps) {
+  const [showApiKey, setShowApiKey] = useState(false);
+
   const getQualityLabel = (quality: number) => {
     if (quality >= 80) return 'High';
     if (quality >= 50) return 'Medium';
@@ -61,6 +64,43 @@ export function SettingsPanel({
             ? "AI will analyze image content, detect text (OCR), and generate smart SEO metadata."
             : "Using basic dimension-based analysis. Enable AI for smarter SEO generation."}
         </p>
+
+        {/* OpenAI API Key Input */}
+        {settings.enableAIAnalysis && (
+          <div className="mt-3 pt-3 border-t border-primary/20">
+            <Label className="text-xs font-medium text-foreground flex items-center gap-2 mb-2">
+              <Key className="w-3 h-3 text-primary shrink-0" />
+              <span>OpenAI API Key (Optional)</span>
+            </Label>
+            <div className="relative">
+              <Input
+                type={showApiKey ? 'text' : 'password'}
+                placeholder="sk-..."
+                value={settings.openaiApiKey}
+                onChange={(e) => onUpdateSettings({ openaiApiKey: e.target.value })}
+                className="pr-10 text-sm font-mono"
+              />
+              <button
+                type="button"
+                onClick={() => setShowApiKey(!showApiKey)}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {showApiKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+            <p className="text-[10px] text-muted-foreground mt-1">
+              Add your own API key if default service is unavailable. Get one from{' '}
+              <a 
+                href="https://platform.openai.com/api-keys" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
+              >
+                platform.openai.com
+              </a>
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Focus Keyword */}

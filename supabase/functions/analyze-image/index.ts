@@ -68,7 +68,7 @@ serve(async (req) => {
       );
     }
 
-    const { imageBase64, focusKeyword } = requestBody;
+    const { imageBase64, focusKeyword, openaiApiKey } = requestBody;
 
     // Validate image data
     const imageValidation = validateImageBase64(imageBase64);
@@ -82,12 +82,18 @@ serve(async (req) => {
     // Sanitize focus keyword
     const sanitizedKeyword = sanitizeFocusKeyword(focusKeyword);
 
-    const OPENAI_API_KEY = Deno.env.get('OPENAI_API_KEY');
+    // Use user-provided API key first, then fall back to environment variable
+    const userApiKey = openaiApiKey && typeof openaiApiKey === 'string' ? openaiApiKey.trim() : null;
+    const OPENAI_API_KEY = userApiKey || Deno.env.get('OPENAI_API_KEY');
+    
     if (!OPENAI_API_KEY) {
-      console.error('OPENAI_API_KEY is not configured');
+      console.error('No OpenAI API key available');
       return new Response(
-        JSON.stringify({ error: 'AI service is not available. Please configure OpenAI API key.' }),
-        { status: 503, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        JSON.stringify({ 
+          error: 'Please add your OpenAI API key in Settings to enable AI analysis.',
+          code: 'NO_API_KEY'
+        }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
@@ -165,7 +171,10 @@ RESPOND IN EXACTLY THIS JSON FORMAT (no markdown, no explanation):
       }
       if (response.status === 401) {
         return new Response(
-          JSON.stringify({ error: 'Invalid OpenAI API key. Please check your configuration.' }),
+          JSON.stringify({ 
+            error: 'Invalid OpenAI API key. Please check your key in Settings.',
+            code: 'INVALID_API_KEY'
+          }),
           { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );
       }
