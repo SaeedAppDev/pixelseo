@@ -72,21 +72,43 @@ export function SettingsPanel({
               <Key className="w-3 h-3 text-primary shrink-0" />
               <span>OpenAI API Key (Optional)</span>
             </Label>
-            <div className="relative">
-              <Input
-                type={showApiKey ? 'text' : 'password'}
-                placeholder="sk-..."
-                value={settings.openaiApiKey}
-                onChange={(e) => onUpdateSettings({ openaiApiKey: e.target.value })}
-                className="pr-10 text-sm font-mono"
-              />
-              <button
-                type="button"
-                onClick={() => setShowApiKey(!showApiKey)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+            <div className="flex gap-2">
+              <div className="relative flex-1">
+                <Input
+                  type={showApiKey ? 'text' : 'password'}
+                  placeholder="sk-..."
+                  value={settings.openaiApiKey}
+                  onChange={(e) => onUpdateSettings({ openaiApiKey: e.target.value })}
+                  className="pr-10 text-sm font-mono"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowApiKey(!showApiKey)}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {showApiKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+              <Button
+                size="sm"
+                variant={settings.openaiApiKey ? "default" : "secondary"}
+                disabled={!settings.openaiApiKey || settings.openaiApiKey.length < 10}
+                onClick={() => {
+                  if (settings.openaiApiKey) {
+                    // Store in localStorage
+                    localStorage.setItem('pixelseo_openai_key', settings.openaiApiKey);
+                    // Show confirmation
+                    const btn = document.activeElement as HTMLButtonElement;
+                    if (btn) {
+                      btn.textContent = 'Saved!';
+                      setTimeout(() => { btn.textContent = 'Save'; }, 1500);
+                    }
+                  }
+                }}
+                className="shrink-0"
               >
-                {showApiKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              </button>
+                Save
+              </Button>
             </div>
             <p className="text-[10px] text-muted-foreground mt-1">
               Add your own API key if default service is unavailable. Get one from{' '}
